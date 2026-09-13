@@ -1,93 +1,120 @@
-# 👟 HEXSHOES - AI Visual Search E-Commerce Platform
+<p align="center">
+  <img src="assets/hexshoes-banner.png" width="100%">
+</p>
+
+<br>
+
+<h1 align="center">👟 HEXSHOES - AI Visual Search E-Commerce Platform</h1>
 
 <p align="center">
-
-An AI-powered e-commerce platform that uses Computer Vision and Deep Learning to provide intelligent footwear search and recommendation experiences.
-
+  An AI-powered footwear e-commerce platform that uses Computer Vision and Deep Learning to provide intelligent visual search and personalized product recommendations.
 </p>
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/AI-Computer%20Vision-blue"/>
-<img src="https://img.shields.io/badge/Machine%20Learning-PyTorch-orange"/>
-<img src="https://img.shields.io/badge/Backend-FastAPI-green"/>
-<img src="https://img.shields.io/badge/Frontend-React-blue"/>
+<img src="https://img.shields.io/badge/AI-Computer%20Vision-blue">
+<img src="https://img.shields.io/badge/Machine%20Learning-PyTorch-orange">
+<img src="https://img.shields.io/badge/Backend-FastAPI-green">
+<img src="https://img.shields.io/badge/Frontend-React-blue">
+<img src="https://img.shields.io/badge/Language-Python-yellow">
+<img src="https://img.shields.io/badge/Database-Firebase-red">
 
 </p>
-
 
 ---
 
-# 📌 Overview
+# 📌 Project Overview
 
-HEXSHOES is an AI-driven footwear e-commerce platform designed to improve product discovery using **visual search technology**.
+HEXSHOES is an AI-powered e-commerce platform designed to transform the traditional footwear shopping experience using Artificial Intelligence, Computer Vision, and Deep Learning technologies.
 
-Unlike traditional e-commerce systems where users search using keywords, HEXSHOES allows users to upload an image of a shoe and discover visually similar products using Artificial Intelligence.
+Unlike traditional e-commerce platforms that rely only on text-based searching, HEXSHOES allows users to upload footwear images and discover visually similar products using AI-powered image understanding.
 
-The platform combines:
+The project combines:
 
+- Artificial Intelligence
 - Computer Vision
 - Deep Learning
-- Image Feature Extraction
-- Similarity Search
-- Full-Stack Web Development
+- Full-Stack Development
+- E-Commerce Technologies
 
-to create an intelligent shopping experience.
-
+to create a smarter footwear discovery experience.
 
 ---
 
 # 🎯 Problem Statement
 
-Traditional online shopping platforms mainly depend on text-based searches.
+Finding products online can be difficult when users:
 
-Users often struggle to find products when:
+- Do not know the exact product name
+- Want to find visually similar footwear
+- Need personalized recommendations
 
-- They do not know the exact product name
-- They only have a reference image
-- They want visually similar products
+Traditional keyword-based search systems cannot fully understand visual appearance.
 
-HEXSHOES solves this problem by enabling **image-based product discovery**.
-
+HEXSHOES addresses this challenge by introducing an AI-based visual search system that understands footwear images and recommends similar products.
 
 ---
 
-# ✨ Key Features
-
+# 🚀 Key Features
 
 ## 🔍 AI Visual Search
 
-Users can upload a footwear image and the system:
+Users can upload a footwear image and find similar products using computer vision technology.
 
-- Processes the image
-- Extracts visual features
-- Generates image embeddings
-- Finds similar footwear products
+Features:
 
-
----
-
-## 🤖 Computer Vision Recommendation System
-
-The AI system provides recommendations using:
-
-- Image feature extraction
-- Deep learning models
+- Image-based product searching
+- Visual feature extraction
 - Similarity comparison
-- Visual matching techniques
+- AI-powered matching
 
 
----
+## 🤖 Intelligent Product Recommendations
 
-## 🛒 E-Commerce Features
+The system provides recommendations based on:
 
-The platform provides:
+- Visual similarity
+- Product characteristics
+- User preferences
+
+
+## 🛒 Modern E-Commerce Experience
+
+The platform includes:
 
 - Product browsing
-- Product search
-- AI-based recommendations
+- Product discovery
 - Responsive user interface
 - Modern shopping experience
+
+
+## ⚡ AI-Powered Backend Services
+
+The backend supports:
+
+- Image processing
+- AI model integration
+- Recommendation APIs
+- Product search services
+
+
+---
+
+# 📸 Application Screenshots
+
+
+## 🏠 Homepage & AI Visual Search Interface
+
+<p align="center">
+  <img src="assets/homepage.png" width="100%">
+</p>
+
+
+## 👟 Product Discovery & Smart Recommendations
+
+<p align="center">
+  <img src="assets/products.png" width="100%">
+</p>
 
 
 ---
@@ -96,56 +123,67 @@ The platform provides:
 
 
 ```
-                 User
-                  |
-                  |
-            React Frontend
-                  |
-                  |
-             FastAPI Backend
-                  |
-                  |
-            AI Service Layer
-                  |
-                  |
-       Computer Vision Model
-                  |
-                  |
-       Product Feature Database
+                         User
+                           |
+                           |
+                 Upload Shoe Image
+                           |
+                           |
+              React Frontend Application
+                           |
+                           |
+                    FastAPI Backend
+                           |
+          ---------------------------------
+          |                               |
+          |                               |
+ Computer Vision AI              Product Database
+          |
+          |
+ Feature Extraction Model
+          |
+          |
+ Similarity Matching Engine
+          |
+          |
+ Recommended Products
 
 ```
-
 
 ---
 
 # 🧠 AI Workflow
 
 
-```
-Input Image
+## 1. Image Input
 
-      ↓
+The user uploads a footwear image into the application.
 
-Image Preprocessing
 
-      ↓
+## 2. Image Processing
 
-Feature Extraction Model
+The uploaded image is processed and prepared for AI analysis.
 
-      ↓
 
-Generate Image Embedding
+## 3. Feature Extraction
 
-      ↓
+Deep learning models analyze important visual features:
 
-Similarity Comparison
+- Shape
+- Colour
+- Design
+- Patterns
+- Product characteristics
 
-      ↓
 
-Recommended Products
+## 4. Similarity Matching
 
-```
+Extracted image features are compared with available footwear products.
 
+
+## 5. Recommendation Generation
+
+The system returns visually similar footwear recommendations.
 
 ---
 
@@ -154,10 +192,10 @@ Recommended Products
 
 ## Frontend
 
-- React
-- TypeScript
-- HTML
-- CSS
+- React.js
+- HTML5
+- CSS3
+- JavaScript
 
 
 ## Backend
@@ -169,14 +207,13 @@ Recommended Products
 
 ## Artificial Intelligence
 
-- PyTorch
 - Computer Vision
 - Deep Learning
-- Image Embeddings
-- Similarity Matching
+- Machine Learning
+- PyTorch
 
 
-## Database & Cloud
+## Database & Storage
 
 - Firebase
 
@@ -195,48 +232,50 @@ Recommended Products
 
 ```
 HEXSHOES-AI-Visual-Search-Ecommerce
-│
-├── frontend
-│   └── React + TypeScript Application
-│
-├── backend
-│   └── FastAPI Server
+
 │
 ├── ai-service
-│   └── Computer Vision & AI Models
+│   └── AI model services
+│
+├── backend
+│   └── Backend APIs and business logic
+│
+├── frontend
+│   └── React frontend application
+│
+├── assets
+│   ├── hexshoes-banner.png
+│   ├── homepage.png
+│   └── products.png
 │
 └── README.md
 
 ```
 
-
 ---
 
-# 🚀 Installation & Setup
+# ⚙️ Installation & Setup
 
 
-## 1. Clone Repository
-
+## Clone Repository
 
 ```bash
 git clone https://github.com/maleeshadissanayaka/HEXSHOES-AI-Visual-Search-Ecommerce.git
 ```
 
 
-## 2. Frontend Setup
-
+## Frontend Setup
 
 ```bash
 cd frontend
 
 npm install
 
-npm run dev
+npm start
 ```
 
 
-## 3. Backend Setup
-
+## Backend Setup
 
 ```bash
 cd backend
@@ -247,8 +286,7 @@ uvicorn main:app --reload
 ```
 
 
-## 4. AI Service Setup
-
+## AI Service Setup
 
 ```bash
 cd ai-service
@@ -261,47 +299,17 @@ python app.py
 
 ---
 
-# 📸 Application Screenshots
-
-(Add screenshots here)
-
-Example:
-
-```
-docs/
-│
-├── homepage.png
-├── visual-search.png
-├── recommendation.png
-└── architecture.png
-
-```
-
-
----
-
-# 📊 AI Model Evaluation
-
-The system evaluates recommendation quality using:
-
-- Visual similarity accuracy
-- Feature matching performance
-- Recommendation relevance
-
-
----
-
 # 🔮 Future Improvements
 
-
-Future enhancements include:
+Future enhancements:
 
 - Advanced recommendation algorithms
-- User preference learning
-- Personalized shopping recommendations
-- Mobile application integration
-- Cloud-based AI deployment
-- Real-time product recommendations
+- User personalization system
+- AI shopping assistant chatbot
+- Mobile application
+- Cloud deployment
+- Real-time recommendation engine
+- Large-scale product search optimization
 
 
 ---
@@ -312,19 +320,41 @@ Future enhancements include:
 ## Maleesha Dissanayaka
 
 BSc (Hons) Data Science Undergraduate  
-AI & Machine Learning Enthusiast
+AI & Data Analytics Enthusiast
 
 
-🔗 GitHub:
-https://github.com/maleeshadissanayaka
+Interested Areas:
 
-
-🔗 Portfolio:
-https://maleeshadissanayaka.github.io
+- Artificial Intelligence
+- Machine Learning
+- Deep Learning
+- Computer Vision
+- Data Analytics
+- Full-Stack Development
 
 
 ---
 
-# ⭐ If you find this project interesting
+# 📫 Connect With Me
 
-Feel free to ⭐ star this repository and explore the implementation.
+
+<p align="center">
+
+<a href="https://www.linkedin.com/in/maleeshavdissanayaka">
+<img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin">
+</a>
+
+<a href="https://maleeshadissanayaka.github.io">
+<img src="https://img.shields.io/badge/Portfolio-black?style=for-the-badge&logo=github">
+</a>
+
+<a href="mailto:maleeshaviraj25d@gmail.com">
+<img src="https://img.shields.io/badge/Email-red?style=for-the-badge&logo=gmail">
+</a>
+
+</p>
+
+
+---
+
+⭐ If you like this project, consider giving it a star!
