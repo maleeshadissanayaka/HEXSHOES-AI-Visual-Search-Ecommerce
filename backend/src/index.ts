@@ -1,6 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import { products } from './products.js'
 import { db } from './firebase.js'
 
 const app = express()
