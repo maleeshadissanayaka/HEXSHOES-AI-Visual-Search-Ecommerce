@@ -1,0 +1,26 @@
+{
+  "status": 200,
+  "matches": [
+    {
+      "filename": "shoe5.jpg",
+      "score": 0.7847
+    },
+    {
+      "filename": "shoe9.jpg",
+      "score": 0.7777
+    },
+    {
+      "filename": "shoe2.jpg",
+      "score": 0.7694
+    },
+    {
+      "filename": "shoe7.jpg",
+      "score": 0.7666
+    },
+    {
+      "filename": "shoe10.jpg",
+      "score": 0.7642
+    }
+  ],
+  "images": true
+}

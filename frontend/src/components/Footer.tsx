@@ -1,46 +1,6 @@
-import type { InfoTopic } from './InfoModal'
-import './Footer.css'
-
-interface FooterProps {
-  onOpenInfo: (topic: InfoTopic) => void
-}
-
-function Footer({ onOpenInfo }: FooterProps) {
-  return (
-    <footer className="site-footer">
-      <div className="wrap">
-        <div className="foot-grid">
-          <div>
-            <div className="foot-mark">HEX<span>S</span>HOES</div>
-            <p>Small-batch footwear designed around geometry — six sides, straight lines, nothing decorative that doesn't earn its place.</p>
-          </div>
-          <div className="foot-col">
-            <h4>Shop</h4>
-            <a href="#cats">Men</a>
-            <a href="#cats">Women</a>
-            <a href="#rail">New Drops</a>
-            <a href="#ai-search">Find My Shoe</a>
-          </div>
-          <div className="foot-col">
-            <h4>Support</h4>
-            <button type="button" onClick={() => onOpenInfo('sizing')}>Sizing Guide</button>
-            <button type="button" onClick={() => onOpenInfo('returns')}>Returns</button>
-            <button type="button" onClick={() => onOpenInfo('shipping')}>Shipping</button>
-          </div>
-          <div className="foot-col">
-            <h4>Company</h4>
-            <button type="button" onClick={() => onOpenInfo('about')}>About</button>
-            <button type="button" onClick={() => onOpenInfo('careers')}>Careers</button>
-            <button type="button" onClick={() => onOpenInfo('contact')}>Contact</button>
-          </div>
-        </div>
-        <div className="foot-bottom">
-          <span>© 2026 HEXSHOES</span>
-          <span>PREVIEW BUILD — NOT LIVE</span>
-        </div>
-      </div>
-    </footer>
-  )
-}
-
-export default Footer
+import Icon from './Icon';
+import type { InfoTopic } from './InfoModal';
+import './Footer.css';
+export default function Footer({ onOpenInfo }: {
+    onOpenInfo: (topic: InfoTopic) => void;
+}) { return <footer className="site-footer" id="footer"><div className="wrap"><div className="foot-grid"><div><a href="#top" className="foot-mark">HEX<strong>SHOES</strong></a><p>Engineered for what’s next.</p></div><div className="foot-col"><h4>SHOP</h4>{[['Men', '#cats'], ['Women', '#cats'], ['New Drops', '#rail'], ['Collections', '#cats'], ['Find My Shoe', '#ai-search']].map(([label, href]) => <a key={label} href={href}>{label}</a>)}</div><div className="foot-col"><h4>SUPPORT</h4>{(['sizing', 'shipping', 'returns', 'care', 'faq'] as const).map(topic => <button key={topic} onClick={() => onOpenInfo(topic)}>{topic === 'sizing' ? 'Sizing Guide' : topic === 'faq' ? 'FAQ' : topic[0].toUpperCase() + topic.slice(1)}</button>)}</div><div className="foot-col"><h4>COMPANY</h4><a href="#story">About</a><a href="#technology">Technology</a>{(['careers', 'contact', 'privacy'] as const).map(topic => <button key={topic} onClick={() => onOpenInfo(topic)}>{topic[0].toUpperCase() + topic.slice(1)}</button>)}</div><div className="foot-col"><h4>FOLLOW US</h4><div className="social-icons"><Icon name="instagram"/><Icon name="facebook"/><Icon name="video"/></div><p>Social channels coming soon.</p></div></div><div className="foot-bottom"><span>© 2026 HEXSHOES</span><div>{(['terms', 'privacy', 'cookies'] as const).map(topic => <button key={topic} onClick={() => onOpenInfo(topic)}>{topic[0].toUpperCase() + topic.slice(1)}</button>)}</div></div></div></footer>; }

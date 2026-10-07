@@ -1,58 +1,72 @@
 .news {
-  padding: 90px 0;
-  border-bottom: 1px solid var(--line);
-  text-align: center;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:30px 0;
+  background:linear-gradient(90deg,#090b0e 60%,#090b0ed9),url('/editorial/slides.png') center/cover
 }
-
+.news-inner {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px
+}
 .news h2 {
-  margin-bottom: 16px;
-  font-family: 'Archivo', sans-serif;
-  font-size: clamp(30px, 5vw, 56px);
-  font-weight: 900;
-  text-transform: uppercase;
+  font-size:28px;
+  margin:8px 0
 }
-
 .news p {
-  margin-bottom: 32px;
-  color: var(--grey-1);
-  font-size: 14px;
+  font-size:12px;
+  color:#aaa
 }
-
 .news-form {
-  max-width: 420px;
-  display: flex;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 100px;
+  display:flex;
+  position:relative;
+  max-width:480px;
+  width:45%;
+  gap:0
 }
-
 .news-form input {
-  flex: 1;
-  min-width: 0;
-  padding: 16px 22px;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--white);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
+  min-width:0;
+  flex:1;
+  padding:14px;
+  border:1px solid #444;
+  border-radius:4px 0 0 4px;
+  background:#101114;
+  color:white;
+  font-size:12px
 }
-
 .news-form button {
-  padding: 16px 26px;
-  border: none;
-  background: var(--white);
-  color: var(--black);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s;
+  border-radius:0 4px 4px 0
+}
+.news-form p {
+  position:absolute;
+  top:calc(100% + 8px);
+  font-size:10px
+}
+.sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip-path:inset(50%)
+}
+@media(max-width:700px) {
+  .news {
+  padding:28px 0 45px
+}
+.news-inner {
+  flex-direction:column;
+  align-items:flex-start;
+  gap:22px
+}
+.news-form {
+  width:100%;
+  max-width:none
+}
+.news-form .btn {
+  padding:12px;
+  font-size:9px
 }
 
-.news-form button:hover {
-  background: var(--signal);
-  color: var(--white);
 }
+

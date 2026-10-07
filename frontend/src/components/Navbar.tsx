@@ -1,40 +1,14 @@
-interface NavbarProps {
-  wishlistCount: number
-  cartCount: number
+import { useEffect, useState } from 'react';
+import Icon from './Icon';
+import './Navbar.css';
+export default function Navbar({ wishlistCount, cartCount }: {
+    wishlistCount: number;
+    cartCount: number;
+}) {
+    const [open, setOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    useEffect(() => { const scroll = () => setScrolled(window.scrollY > 40); scroll(); window.addEventListener('scroll', scroll, { passive: true }); return () => window.removeEventListener('scroll', scroll); }, []);
+    useEffect(() => { const key = (e: KeyboardEvent) => { if (e.key === 'Escape')
+        setOpen(false); }; document.addEventListener('keydown', key); return () => document.removeEventListener('keydown', key); }, []);
+    return <nav className={`navbar${scrolled ? ' scrolled' : ''}`} aria-label="Main navigation"><div className="wrap nav-inner"><a className="nav-mark" href="#top" aria-label="HEXSHOES home">HEX<strong>SHOES</strong><sup>™</sup></a><div className={`nav-links${open ? ' open' : ''}`} id="main-navigation">{[['MEN', '#cats'], ['WOMEN', '#cats'], ['NEW DROPS', '#rail'], ['FIND MY SHOE', '#ai-search'], ['ABOUT', '#story'], ['CONTACT', '#footer']].map(([label, url]) => <a href={url} key={label} onClick={() => setOpen(false)}>{label}</a>)}</div><div className="nav-right"><a href="#ai-search" aria-label="Search"><Icon name="search"/></a><a href="#rail" aria-label={`${wishlistCount} items in wishlist`}><Icon name="heart"/><span className="wish-count">{wishlistCount}</span></a><a className="cart-pill" href="#rail" aria-label={`${cartCount} items in cart`}><Icon name="bag"/><span>{cartCount}</span></a><button className="menu-button" aria-label={open ? 'Close menu' : 'Menu'} aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}><Icon name={open ? 'close' : 'menu'}/></button></div></div></nav>;
 }
-
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z" />
-    </svg>
-  )
-}
-
-import './Navbar.css'
-
-function Navbar({ wishlistCount, cartCount }: NavbarProps) {
-  return (
-    <nav className="navbar">
-      <div className="wrap nav-inner">
-        <a className="nav-mark" href="#top" aria-label="HEXSHOES home">HEX<span>S</span>HOES</a>
-        <div className="nav-links">
-          <a href="#cats">Men</a>
-          <a href="#cats">Women</a>
-          <a href="#rail">New Drops</a>
-          <a href="#ai-search">Find My Shoe</a>
-        </div>
-        <div className="nav-right">
-          <a href="#">Sign in</a>
-          <div className="wish-pill" aria-label={`${wishlistCount} items in wishlist`}>
-            <HeartIcon />
-            <span>{wishlistCount}</span>
-          </div>
-          <div className="cart-pill">Cart · <span>{cartCount}</span></div>
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-export default Navbar

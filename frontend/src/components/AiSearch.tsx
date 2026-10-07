@@ -1,114 +1,65 @@
-import { useState } from 'react'
-import './AiSearch.css'
-
+import { useRef, useState } from 'react';
+import type { Product } from '../data/products';
+import Icon from './Icon';
+import './AiSearch.css';
 interface Match {
-  filename: string
-  score: number
+    filename: string;
+    score: number;
 }
-
-function AiSearch() {
-  const [fileName, setFileName] = useState<string | null>(null)
-  const [results, setResults] = useState<Match[] | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [dragActive, setDragActive] = useState(false)
-
-  async function searchFile(file: File) {
-    setFileName(file.name)
-    setResults(null)
-    setError(null)
-    setLoading(true)
-
-    const formData = new FormData()
-    formData.append('file', file)
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/search', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Server responded with an error')
-      }
-
-      const data = await response.json()
-      setResults(data.matches)
-    } catch {
-      setError('Could not reach the AI search service. Is the server running?')
-    } finally {
-      setLoading(false)
+export default function AiSearch() {
+    const [fileName, setFileName] = useState('');
+    const [results, setResults] = useState<Match[] | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [dragActive, setDragActive] = useState(false);
+    const [mapping, setMapping] = useState<Product[]>([]);
+    const [preview, setPreview] = useState<string | null>(null);
+    const pending = useRef(false);
+    async function searchFile(file: File) {
+        if (pending.current)
+            return;
+        setError(null);
+        if (!['image/jpeg', 'image/png'].includes(file.type)) {
+            setError('Please upload a JPG or PNG image.');
+            return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            setError('Please choose an image smaller than 10 MB.');
+            return;
+        }
+        pending.current = true;
+        setLoading(true);
+        setFileName(file.name);
+        setResults(null);
+        const reader = new FileReader();
+        reader.onload = () => setPreview(String(reader.result));
+        reader.readAsDataURL(file);
+        const form = new FormData();
+        form.append('file', file);
+        try {
+            const response = await fetch('http://127.0.0.1:8000/search', { method: 'POST', body: form, signal: AbortSignal.timeout(120000) });
+            if (!response.ok)
+                throw new Error('Search failed');
+            const data = await response.json();
+            if (!Array.isArray(data.matches) || !data.matches.every((m: Match) => typeof m.filename === 'string' && Number.isFinite(m.score)))
+                throw new Error('Invalid results');
+            setResults(data.matches);
+            try {
+                const products = await fetch('http://localhost:4000/api/products');
+                if (products.ok)
+                    setMapping(await products.json());
+            }
+            catch { /* Catalog mapping is optional; search results remain available. */ }
+        }
+        catch {
+            setError('Visual search is unavailable right now. Please check the AI service and try again.');
+        }
+        finally {
+            pending.current = false;
+            setLoading(false);
+        }
     }
-  }
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (file) void searchFile(file)
-  }
-
-  return (
-    <section className="ai-section" id="ai-search" data-reveal>
-      <div className="wrap">
-        <div className="ai-grid">
-        <div className="ai-copy">
-          <div className="ai-badge"><span className="dot" /> Applied ML feature</div>
-          <h2>Find your<br />shoe by photo.</h2>
-          <p>Snap or upload any shoe photo — the model finds the closest visual matches in the hexshoes catalog, ranked by similarity.</p>
-          <div className="ai-steps">
-            <div className="ai-step"><span className="n">01</span><span className="t"><strong>Embed —</strong> image converted to a feature vector (CLIP/ResNet)</span></div>
-            <div className="ai-step"><span className="n">02</span><span className="t"><strong>Compare —</strong> checked against the full catalog by cosine similarity</span></div>
-            <div className="ai-step"><span className="n">03</span><span className="t"><strong>Rank —</strong> closest matches returned instantly</span></div>
-          </div>
-        </div>
-
-        <div className="demo-box">
-          <label
-            className={`drop-zone${dragActive ? ' drag-active' : ''}`}
-            htmlFor="file-input"
-            onDragOver={(event) => event.preventDefault()}
-            onDragEnter={(event) => { event.preventDefault(); setDragActive(true) }}
-            onDragLeave={(event) => { event.preventDefault(); setDragActive(false) }}
-            onDrop={(event) => {
-              event.preventDefault()
-              setDragActive(false)
-              const file = event.dataTransfer.files[0]
-              if (file) void searchFile(file)
-            }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5" /><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" /></svg>
-            <span className="lbl">
-              {loading
-                ? `Analyzing ${fileName}…`
-                : fileName
-                ? `Last upload: ${fileName}`
-                : 'Drop a photo, or click to upload'}
-            </span>
-            <span className="sub">JPG or PNG</span>
-            <input
-              type="file"
-              id="file-input"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </label>
-
-          {error && <p className="error-msg">{error}</p>}
-
-          {results && (
-            <div className="results show">
-              {results.map((match) => (
-                <div className="result-tile" key={match.filename}>
-                  <img src={`/catalog/${match.filename}`} alt={match.filename} loading="lazy" />
-                  <span className="match-score">{(match.score * 100).toFixed(1)}%</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-      </div>
-    </section>
-  )
+    return <section className="ai-section section-space" id="ai-search" data-reveal><div className="wrap ai-grid"><div className="ai-copy"><span className="eyebrow">VISUAL DISCOVERY · POWERED BY CLIP</span><h2>FIND YOUR NEXT<br />PAIR WITH AI</h2><p>Upload a shoe photo and our AI will find visually similar styles from our collection.</p><ol className="ai-steps">{[['EMBED', 'Convert the uploaded image into a visual embedding.'], ['COMPARE', 'Compare against catalog embeddings using cosine similarity.'], ['RANK', 'Return the most visually similar products.']].map(([title, copy], i) => <li key={title}><span className="step-number">0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div><div className="ai-upload"><label className={`drop-zone${dragActive ? ' drag-active' : ''}`} onDragOver={e => e.preventDefault()} onDragEnter={e => { e.preventDefault(); setDragActive(true); }} onDragLeave={() => setDragActive(false)} onDrop={e => { e.preventDefault(); setDragActive(false); if (e.dataTransfer.files[0])
+        void searchFile(e.dataTransfer.files[0]); }}><Icon name="upload"/><span>{loading ? 'Finding visually similar styles…' : 'Drop an image here'}</span><strong>or click to upload</strong><small>JPG, PNG up to 10 MB</small><input id="file-input" type="file" accept="image/jpeg,image/png" aria-label="Upload shoe image" disabled={loading} onChange={e => { if (e.target.files?.[0])
+        void searchFile(e.target.files[0]); e.target.value = ''; }}/></label><div aria-live="polite">{error && <p className="error-msg" role="alert">{error}</p>}{preview && <div className="upload-preview"><img src={preview} alt="Your uploaded shoe"/><span>{fileName}</span></div>}{results && <><h3 className="results-title">Similar styles <span>Cosine similarity score</span></h3>{results.length === 0 && <p>No catalog matches were returned.</p>}<div className="results">{results.map(match => { const product = mapping.find(p => p.catalogFilename === match.filename || p.image?.split('/').pop() === match.filename); return <article className="result-tile" key={match.filename}><img src={`/catalog/${encodeURIComponent(match.filename)}`} alt={product?.name ?? `Catalog shoe ${match.filename}`}/><span className="match-score">{match.score.toFixed(3)} similarity</span><span className="result-name">{product?.name ?? match.filename}</span></article>; })}</div></>}</div></div></div></section>;
 }
-
-export default AiSearch
