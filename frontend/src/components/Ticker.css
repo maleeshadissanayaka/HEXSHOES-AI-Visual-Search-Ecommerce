@@ -4,7 +4,7 @@
   overflow: hidden;
   white-space: nowrap;
   padding: 9px 0;
-  font-family: 'JetBrains Mono';
+  font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.1em;
 }
@@ -22,4 +22,14 @@
 .ticker-track span {
   margin: 0 28px;
   text-transform: uppercase;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
 }

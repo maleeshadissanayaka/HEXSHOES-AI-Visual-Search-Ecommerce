@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEXSHOES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#050506;
+    --white:#ffffff;
+    --grey-1:#c9c9cc;
+    --grey-2:#88888e;
+    --grey-3:#1a1a1c;
+    --line:#2a2a2d;
+    --signal:#3b5bff;
+    --signal-dim:#2540b8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+  body{
+    background:var(--black); color:var(--white);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{ background:var(--signal); color:#fff; }
+  .wrap{ max-width:1360px; margin:0 auto; padding:0 40px; }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+  /* ---------- TICKER ---------- */
+  .ticker{
+    background:var(--signal); color:#fff; overflow:hidden; white-space:nowrap;
+    padding:9px 0; font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.1em;
+  }
+  .ticker-track{ display:inline-block; animation:scroll 22s linear infinite; }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .ticker-track span{ margin:0 28px; text-transform:uppercase; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(5,5,6,0.75); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:82px; }
+  .nav-mark{ font-family:'Archivo', sans-serif; font-weight:900; font-size:22px; letter-spacing:0.02em; }
+  .nav-mark span{ color:var(--signal); }
+  .nav-links{ display:flex; gap:36px; }
+  .nav-links a{ font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; color:var(--grey-1); transition:color .2s; }
+  .nav-links a:hover{ color:#fff; }
+  .nav-right{ display:flex; align-items:center; gap:24px; font-size:13px; font-weight:600; }
+  .cart-pill{
+    display:flex; align-items:center; gap:8px; border:1px solid var(--line); padding:8px 16px; border-radius:100px;
+    transition:border-color .2s;
+  }
+  .cart-pill:hover{ border-color:var(--signal); }
+  @media (max-width:900px){ .nav-links{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; min-height:88vh; display:flex; flex-direction:column; justify-content:flex-end;
+    padding:0 0 64px; overflow:hidden; border-bottom:1px solid var(--line);
+  }
+  #hexCanvas{ position:absolute; inset:0; width:100%; height:100%; opacity:0.22; mix-blend-mode:screen; z-index:1; }
+  .hero-video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; transition:opacity 1s ease;
+  }
+  .hero-video.loaded{ opacity:1; }
+  .hero-fade{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(5,5,6,0.1) 0%, rgba(5,5,6,0.55) 55%, rgba(5,5,6,0.98) 100%);
+  }
+  .hero-content{ position:relative; z-index:2; }
+  .hero-badge, .hero h1, .hero p, .hero-ctas{
+    animation:heroIn .9s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .hero-badge{ animation-delay:.1s; }
+  .hero h1{ animation-delay:.22s; }
+  .hero p{ animation-delay:.42s; }
+  .hero-ctas{ animation-delay:.58s; }
+  @keyframes heroIn{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce){
+    .hero-badge, .hero h1, .hero p, .hero-ctas{ animation:none; }
+  }
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); padding:7px 14px; border-radius:100px;
+    font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.1em; color:var(--grey-1); margin-bottom:28px;
+    text-transform:uppercase;
+  }
+  .hero-badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .hero h1{
+    font-family:'Archivo', sans-serif; font-weight:900; font-size:clamp(52px, 8.4vw, 128px);
+    line-height:0.92; letter-spacing:-0.02em; text-transform:uppercase; margin-bottom:28px;
+  }
+  .hero h1 .outline{ -webkit-text-stroke:2px #fff; color:transparent; }
+  .hero p{ font-size:17px; color:var(--grey-1); max-width:480px; margin-bottom:36px; font-weight:400; line-height:1.6; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px; padding:17px 30px; border-radius:100px;
+    font-size:13px; font-weight:700; letter-spacing:0.03em; text-transform:uppercase; cursor:pointer;
+    transition:all .25s ease; border:1px solid transparent;
+  }
+  .btn-solid{ background:#fff; color:#050506; }
+  .btn-solid:hover{ background:var(--signal); color:#fff; transform:translateY(-2px); }
+  .btn-ghost{ border-color:var(--line); color:#fff; }
+  .btn-ghost:hover{ border-color:#fff; transform:translateY(-2px); }
+
+  /* ---------- CATEGORY TILES ---------- */
+  .cats{ padding:80px 0 40px; }
+  .cats-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; flex-wrap:wrap; gap:16px;}
+  .cats-head h2{ font-family:'Archivo'; font-weight:900; font-size:clamp(26px,3vw,36px); text-transform:uppercase; }
+  .cats-head a{ font-size:12px; font-weight:600; letter-spacing:0.08em; color:var(--grey-1); text-transform:uppercase; border-bottom:1px solid var(--line); padding-bottom:4px;}
+  .cat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:800px){ .cat-grid{ grid-template-columns:1fr; } }
+  .cat-tile{
+    aspect-ratio:4/5; background:var(--grey-3); border:1px solid var(--line); position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:24px; border-radius:6px; cursor:pointer;
+  }
+  .cat-tile .tile-svg{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.9;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .cat-tile:hover .tile-svg{ transform:scale(1.08) rotate(-2deg); }
+  .cat-tile .tile-svg svg{ width:60%; }
+  .cat-tile .tile-svg img{ width:100%; height:100%; object-fit:cover; }
+  .cat-tile .tile-label{ position:relative; z-index:2; font-family:'Archivo'; font-weight:700; font-size:20px; text-transform:uppercase; }
+  .cat-tile::before{
+    content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(5,5,6,0.85) 0%, transparent 55%); z-index:1;
+  }
+
+  /* ---------- PRODUCT RAIL ---------- */
+  .rail-section{ padding:80px 0; border-top:1px solid var(--line); }
+  .rail-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+  .rail-head h2{ font-family:'Archivo'; font-weight:900; font-size:clamp(26px,3vw,36px); text-transform:uppercase; }
+  .rail-head p{ color:var(--grey-2); font-size:13px; max-width:280px; }
+  .rail{
+    display:flex; gap:18px; overflow-x:auto; padding-bottom:12px; scroll-snap-type:x mandatory;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .rail::-webkit-scrollbar{ display:none; }
+  .prod-card{
+    flex:0 0 268px; scroll-snap-align:start; background:var(--grey-3); border:1px solid var(--line); border-radius:10px;
+    overflow:hidden; transition:border-color .25s ease; position:relative;
+  }
+  .prod-card:hover{ border-color:var(--signal); }
+  .prod-badge{
+    position:absolute; top:14px; left:14px; z-index:2; background:var(--signal); color:#fff; font-family:'JetBrains Mono';
+    font-size:10px; letter-spacing:0.08em; padding:5px 10px; border-radius:100px; text-transform:uppercase;
+  }
+  .prod-img{ height:200px; display:flex; align-items:center; justify-content:center; background:#0d0d0f; position:relative; overflow:hidden; }
+  .prod-img svg{ width:72%; transition:transform .4s ease; }
+  .prod-img img{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+  .prod-card:hover .prod-img svg{ transform:scale(1.06) translateY(-4px); }
+  .prod-card:hover .prod-img img{ transform:scale(1.08); }
+  .prod-info{ padding:20px; }
+  .prod-info .tag{ font-family:'JetBrains Mono'; font-size:10px; color:var(--grey-2); letter-spacing:0.06em; margin-bottom:8px; }
+  .prod-info h3{ font-family:'Archivo'; font-size:16px; font-weight:700; margin-bottom:4px; }
+  .prod-info .desc{ font-size:12px; color:var(--grey-2); margin-bottom:14px; }
+  .prod-foot{ display:flex; justify-content:space-between; align-items:center; }
+  .price{ font-family:'JetBrains Mono'; font-size:14px; font-weight:500; }
+  .add-circle{
+    width:34px; height:34px; border-radius:50%; background:#fff; color:#050506; display:flex; align-items:center;
+    justify-content:center; font-size:18px; cursor:pointer; transition:all .2s ease;
+  }
+  .add-circle:hover{ background:var(--signal); color:#fff; }
+
+  /* ---------- AI SECTION ---------- */
+  .ai-section{ padding:90px 0; border-top:1px solid var(--line); background:linear-gradient(180deg,#050506,#0b0b0e); }
+  .ai-grid{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:center; }
+  @media (max-width:900px){ .ai-grid{ grid-template-columns:1fr; } }
+  .ai-badge{
+    display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.1em;
+    color:var(--signal); text-transform:uppercase; margin-bottom:20px;
+  }
+  .ai-badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .ai-copy h2{ font-family:'Archivo'; font-weight:900; font-size:clamp(30px,4vw,46px); text-transform:uppercase; line-height:1; margin-bottom:22px; }
+  .ai-copy p{ color:var(--grey-1); font-size:15px; line-height:1.7; max-width:420px; margin-bottom:30px; }
+  .ai-steps{ display:flex; flex-direction:column; gap:16px; }
+  .ai-step{ display:flex; gap:16px; align-items:flex-start; }
+  .ai-step .n{ font-family:'JetBrains Mono'; color:var(--signal); font-size:13px; flex-shrink:0; }
+  .ai-step .t{ font-size:13px; color:var(--grey-1); }
+  .ai-step strong{ color:#fff; }
+
+  .demo-box{
+    background:var(--grey-3); border:1px solid var(--line); border-radius:16px; padding:32px;
+  }
+  .drop-zone{
+    border:1.5px dashed var(--line); border-radius:12px; aspect-ratio:16/10;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; cursor:pointer;
+    transition:border-color .25s ease; text-align:center;
+  }
+  .drop-zone:hover{ border-color:var(--signal); }
+  .drop-zone svg{ width:44px; color:var(--grey-2); }
+  .drop-zone .lbl{ font-size:13px; font-weight:600; color:#fff; }
+  .drop-zone .sub{ font-size:11px; color:var(--grey-2); }
+  #file-input{ display:none; }
+  .results{ margin-top:18px; display:none; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .results.show{ display:grid; }
+  .result-tile{
+    aspect-ratio:1/1; background:#0d0d0f; border:1px solid var(--line); border-radius:8px;
+    display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  }
+  .result-tile svg{ width:55%; }
+  .result-tile img{ width:100%; height:100%; object-fit:cover; }
+  .match-score{ position:absolute; bottom:6px; right:8px; font-family:'JetBrains Mono'; font-size:9px; color:var(--signal); }
+
+  /* ---------- USP STRIP ---------- */
+  .usp{ display:flex; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .usp-item{ flex:1; padding:28px 20px; text-align:center; border-right:1px solid var(--line); }
+  .usp-item:last-child{ border-right:none; }
+  .usp-item .k{ font-family:'Archivo'; font-weight:900; font-size:15px; text-transform:uppercase; margin-bottom:4px; }
+  .usp-item .v{ font-size:11px; color:var(--grey-2); font-family:'JetBrains Mono'; letter-spacing:0.05em; }
+  @media (max-width:760px){ .usp{ flex-wrap:wrap; } .usp-item{ flex:1 1 50%; border-bottom:1px solid var(--line);} }
+
+  /* ---------- NEWSLETTER ---------- */
+  .news{ padding:90px 0; text-align:center; border-bottom:1px solid var(--line); }
+  .news h2{ font-family:'Archivo'; font-weight:900; font-size:clamp(30px,5vw,56px); text-transform:uppercase; margin-bottom:16px; }
+  .news p{ color:var(--grey-1); margin-bottom:32px; font-size:14px; }
+  .news-form{ display:flex; max-width:420px; margin:0 auto; gap:0; border:1px solid var(--line); border-radius:100px; overflow:hidden; }
+  .news-form input{
+    flex:1; background:transparent; border:none; padding:16px 22px; color:#fff; font-family:'Space Grotesk'; font-size:13px; outline:none;
+  }
+  .news-form button{
+    background:#fff; border:none; padding:16px 26px; font-weight:700; font-size:12px; text-transform:uppercase;
+    letter-spacing:0.05em; cursor:pointer; transition:background .2s;
+  }
+  .news-form button:hover{ background:var(--signal); color:#fff; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:60px 0 32px; }
+  .foot-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; margin-bottom:50px; }
+  @media (max-width:760px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  .foot-mark{ font-family:'Archivo'; font-weight:900; font-size:22px; text-transform:uppercase; margin-bottom:14px; }
+  .foot-mark span{ color:var(--signal); }
+  .foot-grid > div p{ color:var(--grey-2); font-size:12px; line-height:1.7; max-width:240px; }
+  .foot-col h4{ font-family:'JetBrains Mono'; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--grey-2); margin-bottom:16px; }
+  .foot-col a{ display:block; font-size:13px; color:var(--grey-1); margin-bottom:10px; }
+  .foot-col a:hover{ color:#fff; }
+  .foot-bottom{ border-top:1px solid var(--line); padding-top:22px; display:flex; justify-content:space-between; font-size:10px; color:var(--grey-2); font-family:'JetBrains Mono'; flex-wrap:wrap; gap:10px; }
+
+  .note-banner{ background:var(--signal); color:#fff; text-align:center; font-family:'JetBrains Mono'; font-size:11px; padding:9px 20px; }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  [data-reveal]{
+    opacity:0; transform:translateY(36px);
+    transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
+  [data-reveal-stagger] > *{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  [data-reveal-stagger].is-visible > *{ opacity:1; transform:translateY(0); }
+  [data-reveal-stagger].is-visible > *:nth-child(1){ transition-delay:.05s; }
+  [data-reveal-stagger].is-visible > *:nth-child(2){ transition-delay:.12s; }
+  [data-reveal-stagger].is-visible > *:nth-child(3){ transition-delay:.19s; }
+  [data-reveal-stagger].is-visible > *:nth-child(4){ transition-delay:.26s; }
+  [data-reveal-stagger].is-visible > *:nth-child(5){ transition-delay:.33s; }
+  @media (prefers-reduced-motion: reduce){
+    [data-reveal], [data-reveal-stagger] > *{ opacity:1 !important; transform:none !important; transition:none !important; }
+  }
+
+  /* magnetic buttons */
+  .btn{ will-change:transform; }
+
+  /* product card tilt */
+  .prod-card{ transform-style:preserve-3d; will-change:transform; }
+  .prod-card .prod-img svg{ will-change:transform; }
+
+  /* ---------- HEX MEANING SECTION ---------- */
+  .meaning{ padding:120px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; }
+  .meaning-eyebrow{
+    font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.15em; color:var(--grey-2);
+    text-transform:uppercase; margin-bottom:24px; text-align:center;
+  }
+  .meaning-words{ display:flex; flex-direction:column; gap:6px; }
+  .meaning-word{
+    display:flex; align-items:baseline; gap:28px; justify-content:center; flex-wrap:wrap;
+    font-family:'Archivo'; font-weight:900; text-transform:uppercase;
+    font-size:clamp(34px, 7vw, 88px); line-height:1.02; letter-spacing:-0.02em;
+    color:var(--grey-3); -webkit-text-stroke:1px var(--line);
+    transition:color .6s ease, -webkit-text-stroke-color .6s ease;
+    cursor:default;
+  }
+  .meaning-word .letter{ color:var(--signal); -webkit-text-stroke:0; }
+  .meaning-word .rest{ color:var(--white); -webkit-text-stroke:0; }
+  .meaning-word .tag{
+    font-family:'JetBrains Mono'; font-size:12px; letter-spacing:0.1em; color:var(--grey-2);
+    text-transform:none; align-self:center; -webkit-text-stroke:0;
+  }
+  .meaning-sub{ text-align:center; color:var(--grey-1); font-size:14px; margin-top:36px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.7; }
+
+  /* ---------- CINEMATIC / VIDEO-STYLE SECTION ---------- */
+  .cinema{
+    position:relative; height:72vh; overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cinema-bg{ position:absolute; inset:0; }
+  .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:0.55; }
+  .blob-1{ width:520px; height:520px; background:radial-gradient(circle at 30% 30%, #3b5bff, transparent 70%); top:-120px; left:-80px; animation:float1 16s ease-in-out infinite; }
+  .blob-2{ width:420px; height:420px; background:radial-gradient(circle at 60% 40%, #ffffff22, transparent 70%); bottom:-100px; right:0; animation:float2 20s ease-in-out infinite; }
+  .blob-3{ width:340px; height:340px; background:radial-gradient(circle at 50% 50%, #1c2a7a, transparent 70%); top:40%; left:45%; animation:float3 24s ease-in-out infinite; }
+  @keyframes float1{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(60px,80px); } }
+  @keyframes float2{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(-70px,-40px); } }
+  @keyframes float3{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-40px,50px) scale(1.15); } }
+  @media (prefers-reduced-motion: reduce){ .blob-1,.blob-2,.blob-3{ animation:none; } }
+  .cinema-grain{ position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); mix-blend-mode:overlay; }
+  .cinema-content{ position:relative; z-index:2; text-align:center; padding:0 24px; }
+  .cinema-content .eyebrow{ font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.15em; color:var(--grey-1); text-transform:uppercase; margin-bottom:20px; }
+  .cinema-content h2{ font-family:'Archivo'; font-weight:900; font-size:clamp(34px,6vw,72px); text-transform:uppercase; line-height:0.98; margin-bottom:20px; }
+  .cinema-content p{ color:var(--grey-1); max-width:460px; margin:0 auto 32px; font-size:15px; }
+
+  /* ---------- WISHLIST BUTTON ---------- */
+  .wish-btn{
+    position:absolute; top:14px; right:14px; z-index:3; width:32px; height:32px; border-radius:50%;
+    background:rgba(5,5,6,0.6); backdrop-filter:blur(6px); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .wish-btn:hover{ border-color:var(--signal); }
+  .wish-btn.active{ color:#ff4d6d; border-color:#ff4d6d; }
+  .wish-btn.active svg{ fill:#ff4d6d; }
+  .wish-btn svg{ transition:transform .2s ease; }
+  .wish-btn.active svg{ animation:pop .35s ease; }
+  @keyframes pop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
+
+  /* ---------- QUICK VIEW BUTTON + MODAL ---------- */
+  .qv-btn{
+    position:absolute; left:50%; bottom:14px; transform:translate(-50%,10px);
+    background:#fff; color:#050506; border:none; padding:10px 18px; border-radius:100px;
+    font-family:'JetBrains Mono'; font-size:11px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase;
+    cursor:pointer; opacity:0; transition:all .25s ease;
+  }
+  .prod-card:hover .qv-btn{ opacity:1; transform:translate(-50%,0); }
+  .qv-btn:hover{ background:var(--signal); color:#fff; }
+
+  .modal-overlay{
+    position:fixed; inset:0; z-index:200; background:rgba(5,5,6,0.7); backdrop-filter:blur(6px);
+    display:none; align-items:center; justify-content:center; padding:24px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--grey-3); border:1px solid var(--line); border-radius:16px; max-width:760px; width:100%;
+    display:grid; grid-template-columns:1fr 1fr; overflow:hidden;
+    animation:modalIn .35s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes modalIn{ from{ opacity:0; transform:scale(0.94) translateY(16px); } to{ opacity:1; transform:scale(1) translateY(0); } }
+  @media (max-width:700px){ .modal-box{ grid-template-columns:1fr; max-height:88vh; overflow-y:auto; } }
+  .modal-img{ background:#0d0d0f; display:flex; align-items:center; justify-content:center; padding:0; position:relative; overflow:hidden; }
+  .modal-img svg{ width:80%; }
+  .modal-img img{ width:100%; height:100%; object-fit:cover; min-height:320px; }
+  .modal-close{
+    position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+    background:rgba(5,5,6,0.5); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2;
+  }
+  .modal-info{ padding:36px; display:flex; flex-direction:column; }
+  .modal-info .tag{ font-family:'JetBrains Mono'; font-size:11px; color:var(--grey-2); margin-bottom:10px; }
+  .modal-info h3{ font-family:'Archivo'; font-weight:900; font-size:26px; text-transform:uppercase; margin-bottom:8px; }
+  .modal-info .desc{ color:var(--grey-1); font-size:14px; margin-bottom:20px; }
+  .modal-info .price{ font-family:'JetBrains Mono'; font-size:20px; margin-bottom:24px; display:block; }
+  .size-label{ font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.08em; color:var(--grey-2); text-transform:uppercase; margin-bottom:10px; }
+  .size-grid{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; }
+  .size-opt{
+    width:44px; height:40px; border:1px solid var(--line); border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono'; font-size:12px; cursor:pointer; transition:all .2s ease;
+  }
+  .size-opt:hover{ border-color:var(--grey-1); }
+  .size-opt.selected{ background:#fff; color:#050506; border-color:#fff; }
+  .modal-actions{ display:flex; gap:10px; margin-top:auto; }
+  .modal-actions .btn{ flex:1; justify-content:center; }
+  .modal-wish{
+    width:52px; height:52px; border-radius:100px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:#fff; flex-shrink:0; transition:all .2s ease;
+  }
+  .modal-wish.active{ color:#ff4d6d; border-color:#ff4d6d; }
+  .modal-wish.active svg{ fill:#ff4d6d; }
+
+  /* ---------- WISHLIST COUNT PILL ---------- */
+  .wish-pill{ display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--grey-1); transition:color .2s; }
+  .wish-pill:hover{ color:#fff; }
+  .wish-pill svg{ transition:transform .2s ease; }
+
+  /* ---------- AI CHAT WIDGET ---------- */
+  .chat-fab{
+    position:fixed; bottom:28px; right:28px; z-index:150; width:58px; height:58px; border-radius:50%;
+    background:var(--signal); display:flex; align-items:center; justify-content:center; cursor:pointer;
+    box-shadow:0 8px 30px rgba(59,91,255,0.4); transition:transform .25s ease;
+  }
+  .chat-fab:hover{ transform:scale(1.06); }
+  .chat-fab svg{ width:26px; color:#fff; }
+  .chat-fab .ping{
+    position:absolute; top:-3px; right:-3px; width:14px; height:14px; border-radius:50%; background:#ff4d6d;
+    border:2px solid var(--black);
+  }
+  .chat-panel{
+    position:fixed; bottom:98px; right:28px; z-index:150; width:340px; max-width:calc(100vw - 40px);
+    background:var(--grey-3); border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    display:none; flex-direction:column; height:440px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    animation:modalIn .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .chat-panel.open{ display:flex; }
+  .chat-head{ padding:16px 18px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; }
+  .chat-head .dot{ width:8px; height:8px; border-radius:50%; background:#3cff8a; }
+  .chat-head h4{ font-family:'Archivo'; font-size:14px; font-weight:700; text-transform:uppercase; }
+  .chat-head .sub{ font-size:10px; color:var(--grey-2); font-family:'JetBrains Mono'; }
+  .chat-body{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .chat-msg{ max-width:85%; padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.5; }
+  .chat-msg.bot{ background:#0d0d0f; align-self:flex-start; border-bottom-left-radius:2px; }
+  .chat-msg.user{ background:var(--signal); color:#fff; align-self:flex-end; border-bottom-right-radius:2px; }
+  .chat-suggestions{ display:flex; flex-wrap:wrap; gap:6px; padding:0 16px 12px; }
+  .chat-chip{
+    font-family:'JetBrains Mono'; font-size:10px; border:1px solid var(--line); padding:6px 10px; border-radius:100px;
+    cursor:pointer; color:var(--grey-1); transition:all .2s ease;
+  }
+  .chat-chip:hover{ border-color:var(--signal); color:#fff; }
+  .chat-input-row{ display:flex; border-top:1px solid var(--line); padding:10px; gap:8px; }
+  .chat-input-row input{
+    flex:1; background:#0d0d0f; border:1px solid var(--line); border-radius:100px; padding:10px 16px;
+    color:#fff; font-size:13px; outline:none; font-family:'Space Grotesk';
+  }
+  .chat-input-row input:focus{ border-color:var(--signal); }
+  .chat-send{
+    width:38px; height:38px; border-radius:50%; background:#fff; color:#050506; border:none; display:flex;
+    align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  .chat-send:hover{ background:var(--signal); color:#fff; }
+
+  /* ---------- INFO MODAL ---------- */
+  .info-box{
+    background:var(--grey-3); border:1px solid var(--line); border-radius:16px; max-width:480px; width:100%;
+    padding:36px; position:relative; animation:modalIn .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .info-box h3{ font-family:'Archivo'; font-weight:900; font-size:24px; text-transform:uppercase; margin-bottom:16px; }
+  .info-body{ color:var(--grey-1); font-size:14px; line-height:1.8; }
+  .info-body a{ color:var(--signal); }
+  .info-body p{ margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<div class="note-banner">DESIGN PREVIEW V2 — visual direction only, real build uses React + Node + Firebase</div>
+
+<div class="ticker"><div class="ticker-track">
+  <span>◆ FREE SHIPPING OVER $150</span><span>◆ NEW DROP — HEX RUNNER 02</span><span>◆ VISUAL SEARCH IS LIVE</span><span>◆ FREE SHIPPING OVER $150</span><span>◆ NEW DROP — HEX RUNNER 02</span><span>◆ VISUAL SEARCH IS LIVE</span>
+</div></div>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="nav-mark">HEX<span>S</span>HOES</div>
+    <div class="nav-links">
+      <a href="#cats">Men</a>
+      <a href="#cats">Women</a>
+      <a href="#rail">New Drops</a>
+      <a href="#ai-search">Find My Shoe</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">Sign in</a>
+      <div class="wish-pill" id="wishPill">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg>
+        <span id="wishCount">0</span>
+      </div>
+      <div class="cart-pill">Cart · <span id="cartCount">0</span></div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <canvas id="hexCanvas"></canvas>
+  <!--
+    HOOK UP YOUR REAL VIDEO HERE:
+    1. Download an MP4 from Pexels/Pixabay/Mixkit/Coverr (or your own footage later)
+    2. Put the file in your project's /assets folder
+    3. Replace the src="" below with the path, e.g. src="assets/hero-shoe.mp4"
+    If no video loads, the animated hex background above stays visible automatically.
+  -->
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline poster="https://images.pexels.com/videos/3890371/pexels-photo-3890371.jpeg?auto=compress&cs=tinysrgb&h=900&fit=crop&w=1600" src="https://videos.pexels.com/video-files/3890371/3890371-hd_1920_1080_30fps.mp4">
+  </video>
+  <div class="hero-fade"></div>
+  <div class="wrap hero-content">
+    <div class="hero-badge"><span class="dot"></span> FW26 Collection — Live now</div>
+    <h1>Built<br>for the<br><span class="outline">grid.</span></h1>
+    <p>Six-sided design thinking applied to footwear. Precision-cut uppers, honest materials, an AI stylist that finds your next pair before you scroll.</p>
+    <div class="hero-ctas">
+      <a href="#rail" class="btn btn-solid">Shop New Drops</a>
+      <a href="#ai-search" class="btn btn-ghost">Find my shoe →</a>
+    </div>
+  </div>
+</section>
+
+<div class="usp">
+  <div class="usp-item"><div class="k">Free Shipping</div><div class="v">ON ORDERS $150+</div></div>
+  <div class="usp-item"><div class="k">AI Visual Match</div><div class="v">FIND BY PHOTO</div></div>
+  <div class="usp-item"><div class="k">30-Day Returns</div><div class="v">NO QUESTIONS</div></div>
+  <div class="usp-item"><div class="k">Small Batch</div><div class="v">LIMITED RUNS</div></div>
+</div>
+
+<section class="meaning" data-reveal>
+  <div class="wrap">
+    <div class="meaning-eyebrow">What HEX stands for</div>
+    <div class="meaning-words">
+      <div class="meaning-word"><span><span class="letter">H</span><span class="rest">over</span></span><span class="tag">— every detail responds to you</span></div>
+      <div class="meaning-word"><span><span class="letter">E</span><span class="rest">legance</span></span><span class="tag">— precision over decoration</span></div>
+      <div class="meaning-word"><span><span class="letter">X</span><span class="rest">perience</span></span><span class="tag">— the feeling, not just the shoe</span></div>
+    </div>
+    <p class="meaning-sub">Hover with Elegance, Xperience — three words, one design principle behind every pair we make.</p>
+  </div>
+</section>
+
+<section class="cinema" data-reveal>
+  <div class="cinema-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="cinema-grain"></div>
+  </div>
+  <div class="cinema-content">
+    <div class="eyebrow">FW26 — Behind the Design</div>
+    <h2>Motion is<br>material too.</h2>
+    <p>Swap this panel for real studio footage once you have it — for now it's a living placeholder, animated to show how the finished site will feel in motion.</p>
+    <a href="#rail" class="btn btn-solid">Shop the collection</a>
+  </div>
+</section>
+
+<section class="cats" id="cats" data-reveal>
+  <div class="wrap">
+    <div class="cats-head">
+      <h2>Shop by Category</h2>
+      <a href="#">View all →</a>
+    </div>
+    <div class="cat-grid" data-reveal-stagger>
+      <div class="cat-tile">
+        <div class="tile-svg"><img src="https://images.pexels.com/photos/18212364/pexels-photo-18212364.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Runner shoes"></div>
+        <div class="tile-label">Runners</div>
+      </div>
+      <div class="cat-tile">
+        <div class="tile-svg"><img src="https://images.pexels.com/photos/29573336/pexels-photo-29573336.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Trail and boot shoes"></div>
+        <div class="tile-label">Trail &amp; Boot</div>
+      </div>
+      <div class="cat-tile">
+        <div class="tile-svg"><img src="https://images.pexels.com/photos/12628401/pexels-photo-12628401.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Slide shoes"></div>
+        <div class="tile-label">Slides</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rail-section" id="rail" data-reveal>
+  <div class="wrap">
+    <div class="rail-head">
+      <h2>New Drops</h2>
+      <p>Managed live from the admin dashboard — restock and pricing update instantly.</p>
+    </div>
+    <div class="rail" data-reveal-stagger>
+      <div class="prod-card" data-name="Hex Runner 02" data-tag="#HX-01A · JET BLACK" data-desc="Low-profile, matte canvas" data-full="A low-profile everyday runner built on a lightweight foam sole for all-day comfort. Matte canvas upper, breathable mesh lining, and a grippy rubber outsole for reliable traction on city streets." data-price="$128.00" data-svg="0">
+        <span class="prod-badge">New</span>
+        <button class="wish-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg></button>
+        <div class="prod-img"><img src="https://images.pexels.com/photos/18212364/pexels-photo-18212364.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hex Runner 02">
+          <button class="qv-btn">Quick View</button>
+        </div>
+        <div class="prod-info">
+          <div class="tag">#HX-01A · JET BLACK</div>
+          <h3>Hex Runner 02</h3>
+          <div class="desc">Low-profile, matte canvas</div>
+          <div class="prod-foot"><span class="price">$128.00</span><span class="add-circle">+</span></div>
+        </div>
+      </div>
+      <div class="prod-card" data-name="Hex Trail" data-tag="#HX-02F · OLIVE" data-desc="High-ankle, ripstop panel" data-full="Built for rougher terrain, the Hex Trail pairs a high-ankle silhouette with a durable ripstop panel that resists tearing on rocky trails. Reinforced toe cap and an aggressive tread pattern for extra grip." data-price="$164.00" data-svg="1">
+        <button class="wish-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg></button>
+        <div class="prod-img"><img src="https://images.pexels.com/photos/29573336/pexels-photo-29573336.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hex Trail">
+          <button class="qv-btn">Quick View</button>
+        </div>
+        <div class="prod-info">
+          <div class="tag">#HX-02F · OLIVE</div>
+          <h3>Hex Trail</h3>
+          <div class="desc">High-ankle, ripstop panel</div>
+          <div class="prod-foot"><span class="price">$164.00</span><span class="add-circle">+</span></div>
+        </div>
+      </div>
+      <div class="prod-card" data-name="Hex Slide" data-tag="#HX-03C · CORK" data-desc="Minimal strap, cork sole" data-full="An easy slip-on slide with a single minimal strap and a contoured cork footbed that softens with wear. Lightweight, water-friendly, and ideal for post-run recovery or lazy weekends." data-price="$74.00" data-svg="2">
+        <span class="prod-badge">New</span>
+        <button class="wish-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg></button>
+        <div class="prod-img"><img src="https://images.pexels.com/photos/12628401/pexels-photo-12628401.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hex Slide">
+          <button class="qv-btn">Quick View</button>
+        </div>
+        <div class="prod-info">
+          <div class="tag">#HX-03C · CORK</div>
+          <h3>Hex Slide</h3>
+          <div class="desc">Minimal strap, cork sole</div>
+          <div class="prod-foot"><span class="price">$74.00</span><span class="add-circle">+</span></div>
+        </div>
+      </div>
+      <div class="prod-card" data-name="Hex Mono" data-tag="#HX-04E · CHALK" data-desc="Tonal knit, sock-fit" data-full="A sock-fit knit upper that hugs the foot for a seamless, tonal look. Stretch collar for easy on-off, cushioned midsole, and a minimal outsole that keeps the profile clean and modern." data-price="$142.00" data-svg="3">
+        <button class="wish-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg></button>
+        <div class="prod-img"><img src="https://images.pexels.com/photos/9853355/pexels-photo-9853355.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hex Mono">
+          <button class="qv-btn">Quick View</button>
+        </div>
+        <div class="prod-info">
+          <div class="tag">#HX-04E · CHALK</div>
+          <h3>Hex Mono</h3>
+          <div class="desc">Tonal knit, sock-fit</div>
+          <div class="prod-foot"><span class="price">$142.00</span><span class="add-circle">+</span></div>
+        </div>
+      </div>
+      <div class="prod-card" data-name="Hex Formal" data-tag="#HX-05B · STONE" data-desc="Leather cap-toe, hex sole" data-full="A cap-toe leather shoe with a hex-patterned sole that bridges formal and street styling. Full-grain leather upper, cushioned insole for long wear, and a low-profile heel for a modern silhouette." data-price="$188.00" data-svg="4">
+        <span class="prod-badge">New</span>
+        <button class="wish-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg></button>
+        <div class="prod-img"><img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hex Formal">
+          <button class="qv-btn">Quick View</button>
+        </div>
+        <div class="prod-info">
+          <div class="tag">#HX-05B · STONE</div>
+          <h3>Hex Formal</h3>
+          <div class="desc">Leather cap-toe, hex sole</div>
+          <div class="prod-foot"><span class="price">$188.00</span><span class="add-circle">+</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ai-section" id="ai-search" data-reveal>
+  <div class="wrap">
+    <div class="ai-grid">
+      <div class="ai-copy">
+        <div class="ai-badge"><span class="dot"></span> Applied ML feature</div>
+        <h2>Find your<br>shoe by photo.</h2>
+        <p>Snap or upload any shoe photo — the model finds the closest visual matches in the hexshoes catalog, ranked by similarity.</p>
+        <div class="ai-steps">
+          <div class="ai-step"><span class="n">01</span><span class="t"><strong>Embed —</strong> image converted to a feature vector (CLIP/ResNet)</span></div>
+          <div class="ai-step"><span class="n">02</span><span class="t"><strong>Compare —</strong> checked against the full catalog by cosine similarity</span></div>
+          <div class="ai-step"><span class="n">03</span><span class="t"><strong>Rank —</strong> closest matches returned instantly</span></div>
+        </div>
+      </div>
+      <div class="demo-box">
+        <label class="drop-zone" id="dropZone" for="file-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+          <span class="lbl" id="dzLabel">Drop a photo, or click to upload</span>
+          <span class="sub">Mocked demo — JPG or PNG</span>
+          <input type="file" id="file-input" accept="image/*">
+        </label>
+        <div class="results" id="results">
+          <div class="result-tile"><img src="https://images.pexels.com/photos/18212364/pexels-photo-18212364.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Match 1"><span class="match-score">96.2%</span></div>
+          <div class="result-tile"><img src="https://images.pexels.com/photos/29573336/pexels-photo-29573336.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Match 2"><span class="match-score">91.5%</span></div>
+          <div class="result-tile"><img src="https://images.pexels.com/photos/12628401/pexels-photo-12628401.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Match 3"><span class="match-score">88.7%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="news" data-reveal>
+  <div class="wrap">
+    <h2>Stay in the grid</h2>
+    <p>New drops, restocks, and early access — no spam.</p>
+    <div class="news-form">
+      <input type="email" placeholder="your@email.com">
+      <button>Sign up</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-mark">HEX<span>S</span>HOES</div>
+        <p>Small-batch footwear designed around geometry — six sides, straight lines, nothing decorative that doesn't earn its place.</p>
+      </div>
+      <div class="foot-col"><h4>Shop</h4><a href="#cats">Men</a><a href="#cats">Women</a><a href="#rail">New Drops</a><a href="#ai-search">Find My Shoe</a></div>
+      <div class="foot-col"><h4>Support</h4><a href="#" class="info-link" data-info="sizing">Sizing Guide</a><a href="#" class="info-link" data-info="returns">Returns</a><a href="#" class="info-link" data-info="shipping">Shipping</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="#" class="info-link" data-info="about">About</a><a href="#" class="info-link" data-info="careers">Careers</a><a href="#" class="info-link" data-info="contact">Contact</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 HEXSHOES</span>
+      <span>PREVIEW BUILD — NOT LIVE</span>
+    </div>
+  </div>
+</footer>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="qvOverlay">
+  <div class="modal-box">
+    <div class="modal-img" id="qvImgWrap">
+      <button class="modal-close" id="qvClose">✕</button>
+    </div>
+    <div class="modal-info">
+      <div class="tag" id="qvTag">#HX-01A · JET BLACK</div>
+      <h3 id="qvName">Hex Runner 02</h3>
+      <div class="size-label" style="margin-bottom:6px;">Description</div>
+      <div class="desc" id="qvDesc">Low-profile, matte canvas</div>
+      <span class="price" id="qvPrice">$128.00</span>
+      <div class="size-label">Select size (UK)</div>
+      <div class="size-grid" id="qvSizes">
+        <div class="size-opt">6</div>
+        <div class="size-opt">7</div>
+        <div class="size-opt selected">8</div>
+        <div class="size-opt">9</div>
+        <div class="size-opt">10</div>
+        <div class="size-opt">11</div>
+      </div>
+      <div class="modal-actions">
+        <div class="modal-wish" id="qvWish">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 2 5 5.5 5c2 0 3.5 1.2 4.5 2.7C11 6.2 12.5 5 14.5 5 18 5 19.5 8.5 17.5 12.5 15 16.65 12 21 12 21z"/></svg>
+        </div>
+        <button class="btn btn-solid" id="qvAddCart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT ASSISTANT -->
+<!-- INFO MODAL (About / Careers / Contact / Sizing / Returns / Shipping) -->
+<div class="modal-overlay" id="infoOverlay">
+  <div class="info-box">
+    <button class="modal-close" id="infoClose">✕</button>
+    <h3 id="infoTitle">About</h3>
+    <div id="infoBody" class="info-body"></div>
+  </div>
+</div>
+
+<div class="chat-fab" id="chatFab">
+  <span class="ping"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <span class="dot"></span>
+    <div>
+      <h4>Hex Assistant</h4>
+      <div class="sub">AI stylist — demo preview</div>
+    </div>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">Hey! I'm the Hex Assistant. Ask me about sizing, materials, or which pair fits your style.</div>
+  </div>
+  <div class="chat-suggestions">
+    <span class="chat-chip" data-q="What's your best runner?">Best runner?</span>
+    <span class="chat-chip" data-q="How does sizing work?">Sizing help</span>
+    <span class="chat-chip" data-q="What are your materials?">Materials</span>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask the Hex Assistant…">
+    <button class="chat-send" id="chatSend">→</button>
+  </div>
+</div>
+
+<script>
+  // hero video load / fallback logic
+  const heroVideo = document.getElementById('heroVideo');
+  if(heroVideo){
+    heroVideo.addEventListener('loadeddata', () => heroVideo.classList.add('loaded'));
+    heroVideo.addEventListener('canplay', () => heroVideo.classList.add('loaded'));
+    heroVideo.addEventListener('error', () => console.warn('Hero video failed to load — hex canvas remains visible as fallback.'));
+  }
+
+  // hex grid ambient canvas
+
+  const canvas = document.getElementById('hexCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, t = 0;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resize(){ w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  function hex(cx, cy, r){
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const a = Math.PI/180 * (60*i - 30);
+      const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.closePath(); ctx.stroke();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const r = 46, dx = r*1.732, dy = r*1.5;
+    const offset = reduceMotion ? 0 : (t*0.15) % dx;
+    for(let row=-1; row*dy < h+dy; row++){
+      for(let col=-2; col*dx < w+dx; col++){
+        const cx = col*dx + (row%2 ? dx/2 : 0) + offset;
+        const cy = row*dy;
+        const dist = Math.hypot(cx - w*0.7, cy - h*0.4);
+        const alpha = Math.max(0, 0.14 - dist/4000);
+        ctx.strokeStyle = `rgba(59,91,255,${alpha + 0.03})`;
+        ctx.lineWidth = 1;
+        hex(cx, cy, r);
+      }
+    }
+    if(!reduceMotion){ t++; requestAnimationFrame(draw); }
+  }
+  draw();
+
+  // AI demo
+  const fileInput = document.getElementById('file-input');
+  const dzLabel = document.getElementById('dzLabel');
+  const results = document.getElementById('results');
+  const dropZone = document.getElementById('dropZone');
+  fileInput.addEventListener('change', () => {
+    if(fileInput.files && fileInput.files[0]){
+      dzLabel.textContent = 'Analyzing ' + fileInput.files[0].name + ' …';
+      setTimeout(() => {
+        dzLabel.textContent = 'Match found — 3 similar pairs';
+        results.classList.add('show');
+      }, 900);
+    }
+  });
+  ['dragover','dragenter'].forEach(evt => dropZone.addEventListener(evt, e=>{e.preventDefault(); dropZone.style.borderColor='#3b5bff';}));
+  ['dragleave','drop'].forEach(evt => dropZone.addEventListener(evt, e=>{e.preventDefault(); dropZone.style.borderColor='';}));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // magnetic buttons
+  if(!reduceMotion){
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        btn.style.transform = `translate(${x*0.18}px, ${y*0.35}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+
+    // product card tilt
+    document.querySelectorAll('.prod-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${px*8}deg) rotateX(${-py*8}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+
+    // hero cursor-reactive glow via canvas offset
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+    });
+  }
+  let mouseX = 0, mouseY = 0;
+
+  // ---------- WISHLIST ----------
+  let wishlist = new Set();
+  const wishCountEl = document.getElementById('wishCount');
+  function updateWishCount(){ wishCountEl.textContent = wishlist.size; }
+
+  // ---------- CART ----------
+  let cartCount = 0;
+  const cartCountEl = document.getElementById('cartCount');
+  function addToCart(name){
+    cartCount++;
+    cartCountEl.textContent = cartCount;
+    const pill = document.querySelector('.cart-pill');
+    pill.style.borderColor = 'var(--signal)';
+    setTimeout(() => { pill.style.borderColor = ''; }, 600);
+  }
+  document.querySelectorAll('.add-circle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.prod-card');
+      addToCart(card ? card.dataset.name : 'item');
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = '+'; }, 900);
+    });
+  });
+  document.querySelectorAll('.wish-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.prod-card');
+      const name = card.dataset.name;
+      btn.classList.toggle('active');
+      if(wishlist.has(name)){ wishlist.delete(name); } else { wishlist.add(name); }
+      updateWishCount();
+    });
+  });
+
+  // ---------- QUICK VIEW MODAL ----------
+  const qvOverlay = document.getElementById('qvOverlay');
+  const qvImgWrap = document.getElementById('qvImgWrap');
+  const qvTag = document.getElementById('qvTag');
+  const qvName = document.getElementById('qvName');
+  const qvDesc = document.getElementById('qvDesc');
+  const qvPrice = document.getElementById('qvPrice');
+  const qvWish = document.getElementById('qvWish');
+  const qvClose = document.getElementById('qvClose');
+  let currentQvName = null;
+
+  document.querySelectorAll('.qv-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.prod-card');
+      const photo = card.querySelector('.prod-img img').outerHTML;
+      qvImgWrap.innerHTML = '<button class="modal-close" id="qvClose">✕</button>' + photo;
+      document.getElementById('qvClose').addEventListener('click', closeQv);
+      qvTag.textContent = card.dataset.tag;
+      qvName.textContent = card.dataset.name;
+      qvDesc.textContent = card.dataset.full || card.dataset.desc;
+      qvPrice.textContent = card.dataset.price;
+      currentQvName = card.dataset.name;
+      qvWish.classList.toggle('active', wishlist.has(currentQvName));
+      qvOverlay.classList.add('open');
+    });
+  });
+
+  function closeQv(){ qvOverlay.classList.remove('open'); }
+  qvClose.addEventListener('click', closeQv);
+
+  const qvAddCart = document.getElementById('qvAddCart');
+  qvAddCart.addEventListener('click', () => {
+    addToCart(currentQvName || 'item');
+    qvAddCart.textContent = 'Added ✓';
+    setTimeout(() => { qvAddCart.textContent = 'Add to Cart'; }, 1200);
+  });
+  qvOverlay.addEventListener('click', (e) => { if(e.target === qvOverlay) closeQv(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeQv(); });
+
+  qvWish.addEventListener('click', () => {
+    if(!currentQvName) return;
+    qvWish.classList.toggle('active');
+    if(wishlist.has(currentQvName)){ wishlist.delete(currentQvName); } else { wishlist.add(currentQvName); }
+    updateWishCount();
+    document.querySelectorAll('.prod-card').forEach(card => {
+      if(card.dataset.name === currentQvName){
+        card.querySelector('.wish-btn').classList.toggle('active', wishlist.has(currentQvName));
+      }
+    });
+  });
+
+  document.querySelectorAll('#qvSizes .size-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('#qvSizes .size-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+
+  // ---------- AI CHAT ASSISTANT (mocked demo) ----------
+  const chatFab = document.getElementById('chatFab');
+  const chatPanel = document.getElementById('chatPanel');
+  const chatBody = document.getElementById('chatBody');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+
+  chatFab.addEventListener('click', () => {
+    chatPanel.classList.toggle('open');
+    chatFab.querySelector('.ping').style.display = 'none';
+  });
+
+  function addMsg(text, who){
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + who;
+    div.textContent = text;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function botReply(q){
+    const lower = q.toLowerCase();
+    let reply = "I'd recommend the Hex Runner 02 — it's our most popular low-profile pair, true to size.";
+    if(lower.includes('size') || lower.includes('chart')){
+      reply = "We run true to UK sizing. Quick chart: UK 6 = EU 39/US 7, UK 8 = EU 42/US 9, UK 10 = EU 44/US 11. Between sizes? Size up for the Hex Trail since it's a snugger fit. Full chart is in the footer under Sizing Guide.";
+    } else if(lower.includes('return') || lower.includes('refund')){
+      reply = "Unworn items in original packaging can be returned within 30 days for a full refund — see the Returns link in the footer for details.";
+    } else if(lower.includes('ship')){
+      reply = "Standard shipping takes 3–5 business days, and it's free on orders over $150.";
+    } else if(lower.includes('material')){
+      reply = "Most pairs use matte canvas or ripstop uppers with a cork or rubber sole — durable and breathable.";
+    } else if(lower.includes('runner') || lower.includes('best')){
+      reply = "The Hex Runner 02 is our best all-rounder — low-profile, matte canvas, $128.";
+    } else if(lower.includes('trail')){
+      reply = "The Hex Trail is built for rougher terrain — high-ankle with a ripstop panel, $164.";
+    } else if(lower.includes('price') || lower.includes('cost')){
+      reply = "Prices range from $74 (Hex Slide) to $188 (Hex Formal) depending on the pair.";
+    }
+    setTimeout(() => addMsg(reply, 'bot'), 600);
+  }
+
+  function sendChat(){
+    const val = chatInput.value.trim();
+    if(!val) return;
+    addMsg(val, 'user');
+    chatInput.value = '';
+    botReply(val);
+  }
+  chatSend.addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') sendChat(); });
+  document.querySelectorAll('.chat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      addMsg(chip.dataset.q, 'user');
+      botReply(chip.dataset.q);
+    });
+  });
+
+  // ---------- INFO MODAL (About / Careers / Contact / Sizing / Returns / Shipping) ----------
+  const infoContent = {
+    about: {
+      title: 'About Hexshoes',
+      body: `<p>HEXSHOES is a small-batch footwear studio built around one idea: geometry should do the design work, not decoration. Every pair starts from a six-sided (hex) shape principle — clean lines, honest materials, nothing added that doesn't earn its place.</p>
+             <p>This site is currently in active development as part of a portfolio/CV project, combining full-stack web development with an applied AI visual search feature.</p>`
+    },
+    careers: {
+      title: 'Careers',
+      body: `<p>HEXSHOES is currently a small, early-stage project — there are no open roles right now.</p>
+             <p>If you're interested in future opportunities or want to connect, reach out via the Contact details below.</p>`
+    },
+    contact: {
+      title: 'Contact Us',
+      body: `<p><strong>Maleesha Viraj</strong></p>
+             <p>Phone: +94 70 151 4261</p>
+             <p>Email: <a href="mailto:maleeshaviraj25d@gmail.com">maleeshaviraj25d@gmail.com</a></p>
+             <p>We aim to respond to all enquiries within 1–2 business days.</p>`
+    },
+    sizing: {
+      title: 'Sizing Guide',
+      body: `<p>HEXSHOES runs true to UK sizing. If you're between sizes, we recommend sizing up for high-ankle styles like the Hex Trail.</p>
+             <p><strong>UK 6</strong> — EU 39 / US 7<br>
+             <strong>UK 7</strong> — EU 40 / US 8<br>
+             <strong>UK 8</strong> — EU 42 / US 9<br>
+             <strong>UK 9</strong> — EU 43 / US 10<br>
+             <strong>UK 10</strong> — EU 44 / US 11<br>
+             <strong>UK 11</strong> — EU 45 / US 12</p>`
+    },
+    returns: {
+      title: 'Returns',
+      body: `<p>Unworn items in original packaging can be returned within 30 days of delivery for a full refund.</p>
+             <p>To start a return, contact us with your order number and we'll send you next steps.</p>`
+    },
+    shipping: {
+      title: 'Shipping',
+      body: `<p>Standard shipping takes 3–5 business days. Free shipping is available on all orders over $150.</p>
+             <p>Express shipping options are available at checkout for an additional fee.</p>`
+    }
+  };
+
+  const infoOverlay = document.getElementById('infoOverlay');
+  const infoTitle = document.getElementById('infoTitle');
+  const infoBody = document.getElementById('infoBody');
+  const infoClose = document.getElementById('infoClose');
+
+  document.querySelectorAll('.info-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const key = link.dataset.info;
+      const content = infoContent[key];
+      if(!content) return;
+      infoTitle.textContent = content.title;
+      infoBody.innerHTML = content.body;
+      infoOverlay.classList.add('open');
+    });
+  });
+
+  function closeInfo(){ infoOverlay.classList.remove('open'); }
+  infoClose.addEventListener('click', closeInfo);
+  infoOverlay.addEventListener('click', (e) => { if(e.target === infoOverlay) closeInfo(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeInfo(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+[
+  {
+    "width": 1440,
+    "api": {
+      "status": 200,
+      "count": 4,
+      "namesMatchFirestore": true,
+      "names": [
+        "Hex Runner 02",
+        "Hex Trail",
+        "Hex Slide",
+        "Hex Mono"
+      ]
+    },
+    "layout": {
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "brokenImages": [],
+      "fonts": {
+        "archivo": true,
+        "space": true,
+        "mono": true
+      }
+    },
+    "errors": [],
+    "interactions": {
+      "modal": true,
+      "sizeSelected": "true",
+      "wishCount": "0",
+      "cartCount": "2",
+      "film": true,
+      "sizing": true,
+      "mobileMenu": null
+    },
+    "ai": {
+      "status": 200,
+      "matchCount": 5,
+      "requestMethod": "POST",
+      "contentType": "multipart/form-data; boundary=----WebKitFormBoundarywDVnmKLzqstAoapM",
+      "firstMatch": {
+        "filename": "shoe1.jpg",
+        "score": 1
+      }
+    }
+  },
+  {
+    "width": 390,
+    "api": {
+      "status": 200,
+      "count": 4,
+      "namesMatchFirestore": true,
+      "names": [
+        "Hex Runner 02",
+        "Hex Trail",
+        "Hex Slide",
+        "Hex Mono"
+      ]
+    },
+    "layout": {
+      "viewport": 390,
+      "documentWidth": 390,
+      "brokenImages": [],
+      "fonts": {
+        "archivo": true,
+        "space": true,
+        "mono": true
+      }
+    },
+    "errors": [],
+    "interactions": {
+      "modal": true,
+      "sizeSelected": "true",
+      "wishCount": "0",
+      "cartCount": "2",
+      "film": true,
+      "sizing": true,
+      "mobileMenu": true
+    },
+    "ai": {
+      "status": 200,
+      "matchCount": 5,
+      "requestMethod": "POST",
+      "contentType": "multipart/form-data; boundary=----WebKitFormBoundaryvz6fxemX3atWtl7g",
+      "firstMatch": {
+        "filename": "shoe1.jpg",
+        "score": 1
+      }
+    }
+  },
+  {
+    "reducedMotion": {
+      "opacity": "1",
+      "transform": "none"
+    }
+  }
+]

@@ -11,11 +11,9 @@ function AiSearch() {
   const [results, setResults] = useState<Match[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [dragActive, setDragActive] = useState(false)
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-
+  async function searchFile(file: File) {
     setFileName(file.name)
     setResults(null)
     setError(null)
@@ -36,32 +34,48 @@ function AiSearch() {
 
       const data = await response.json()
       setResults(data.matches)
-    } catch (err) {
+    } catch {
       setError('Could not reach the AI search service. Is the server running?')
     } finally {
       setLoading(false)
     }
   }
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) void searchFile(file)
+  }
+
   return (
-    <section className="ai-section" id="ai-search">
-      <div className="ai-grid">
+    <section className="ai-section" id="ai-search" data-reveal>
+      <div className="wrap">
+        <div className="ai-grid">
         <div className="ai-copy">
-          <span className="ai-badge">Applied ML feature</span>
+          <div className="ai-badge"><span className="dot" /> Applied ML feature</div>
           <h2>Find your<br />shoe by photo.</h2>
-          <p>
-            Upload any shoe photo — the model finds the closest visual
-            matches in the hexshoes catalog, ranked by similarity.
-          </p>
+          <p>Snap or upload any shoe photo — the model finds the closest visual matches in the hexshoes catalog, ranked by similarity.</p>
           <div className="ai-steps">
-            <div className="ai-step"><span className="n">01</span> Image converted to a feature embedding (CLIP/ResNet)</div>
-            <div className="ai-step"><span className="n">02</span> Compared against the full catalog by cosine similarity</div>
-            <div className="ai-step"><span className="n">03</span> Closest matches returned, ranked by score</div>
+            <div className="ai-step"><span className="n">01</span><span className="t"><strong>Embed —</strong> image converted to a feature vector (CLIP/ResNet)</span></div>
+            <div className="ai-step"><span className="n">02</span><span className="t"><strong>Compare —</strong> checked against the full catalog by cosine similarity</span></div>
+            <div className="ai-step"><span className="n">03</span><span className="t"><strong>Rank —</strong> closest matches returned instantly</span></div>
           </div>
         </div>
 
         <div className="demo-box">
-          <label className="drop-zone" htmlFor="file-input">
+          <label
+            className={`drop-zone${dragActive ? ' drag-active' : ''}`}
+            htmlFor="file-input"
+            onDragOver={(event) => event.preventDefault()}
+            onDragEnter={(event) => { event.preventDefault(); setDragActive(true) }}
+            onDragLeave={(event) => { event.preventDefault(); setDragActive(false) }}
+            onDrop={(event) => {
+              event.preventDefault()
+              setDragActive(false)
+              const file = event.dataTransfer.files[0]
+              if (file) void searchFile(file)
+            }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5" /><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" /></svg>
             <span className="lbl">
               {loading
                 ? `Analyzing ${fileName}…`
@@ -75,23 +89,23 @@ function AiSearch() {
               id="file-input"
               accept="image/*"
               onChange={handleFileChange}
-              style={{ display: 'none' }}
             />
           </label>
 
           {error && <p className="error-msg">{error}</p>}
 
           {results && (
-            <div className="results">
+            <div className="results show">
               {results.map((match) => (
                 <div className="result-tile" key={match.filename}>
-                  🩴
-                  <span className="score">{(match.score * 100).toFixed(1)}%</span>
+                  <img src={`/catalog/${match.filename}`} alt={match.filename} loading="lazy" />
+                  <span className="match-score">{(match.score * 100).toFixed(1)}%</span>
                 </div>
               ))}
             </div>
           )}
         </div>
+      </div>
       </div>
     </section>
   )

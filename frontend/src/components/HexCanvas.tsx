@@ -27,7 +27,11 @@ function HexCanvas() {
         const a = (Math.PI / 180) * (60 * i - 30)
         const x = cx + r * Math.cos(a)
         const y = cy + r * Math.sin(a)
-        i === 0 ? ctx!.moveTo(x, y) : ctx!.lineTo(x, y)
+        if (i === 0) {
+          ctx!.moveTo(x, y)
+        } else {
+          ctx!.lineTo(x, y)
+        }
       }
       ctx!.closePath()
       ctx!.stroke()

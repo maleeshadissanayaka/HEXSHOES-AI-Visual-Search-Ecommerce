@@ -3,7 +3,13 @@ import './ProductRail.css'
 import ProductCard from './ProductCard'
 import type { Product } from '../data/products'
 
-function ProductRail() {
+interface ProductRailProps {
+  wishlist: Set<string>
+  onToggleWishlist: (productId: string) => void
+  onAddToCart: (productName: string) => void
+}
+
+function ProductRail({ wishlist, onToggleWishlist, onAddToCart }: ProductRailProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -25,19 +31,27 @@ function ProductRail() {
   }, [])
 
   return (
-    <section className="rail-section" id="shop">
-      <div className="rail-head">
-        <h2>New Drops</h2>
-        <p>Managed live from the admin dashboard — restock and pricing update instantly.</p>
-      </div>
+    <section className="rail-section" id="rail" data-reveal>
+      <div className="wrap">
+        <div className="rail-head">
+          <h2>New Drops</h2>
+          <p>Managed live from the admin dashboard — restock and pricing update instantly.</p>
+        </div>
 
-      {loading && <p className="rail-status">Loading products…</p>}
-      {error && <p className="rail-status error">{error}</p>}
+        {loading && <p className="rail-status">Loading products…</p>}
+        {error && <p className="rail-status error">{error}</p>}
 
-      <div className="rail">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <div className="rail" data-reveal-stagger>
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isWishlisted={wishlist.has(product.id)}
+              onToggleWishlist={() => onToggleWishlist(product.id)}
+              onAddToCart={onAddToCart}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

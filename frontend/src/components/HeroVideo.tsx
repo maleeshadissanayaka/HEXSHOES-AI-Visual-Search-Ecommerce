@@ -30,8 +30,8 @@ function HeroVideo() {
       muted
       loop
       playsInline
-      poster="https://images.pexels.com/videos/7644257/adult-at-night-athlete-boy-7644257.jpeg?auto=compress&cs=tinysrgb&h=900&fit=crop&w=1600"
-      src="https://videos.pexels.com/video-files/7644257/7644257-uhd_2560_1440_24fps.mp4"
+      poster="https://images.pexels.com/videos/3890371/pexels-photo-3890371.jpeg?auto=compress&cs=tinysrgb&h=900&fit=crop&w=1600"
+      src="https://videos.pexels.com/video-files/3890371/3890371-hd_1920_1080_30fps.mp4"
     />
   )
 }
