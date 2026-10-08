@@ -166,6 +166,9 @@ See `frontend/verification/platform-home-1440.png`, `platform-home-390.png`, `pl
 
 ## Security and portfolio boundaries
 
+For production credential handling, compiled backend startup, AI hosting and
+Vercel SPA routing, see [deployment preparation](DEPLOYMENT.md).
+
 The credential file, all real `.env` variants, node_modules and Python environments are ignored. Never push secrets. Product API responses whitelist catalog fields and sanitize errors. Origin allowlists, MIME/size/decoder validation and bounded AI inference protect local integration. No payment card fields exist. Checkout is deliberately demo-only, with no order persistence or gateway. Legal policies, film, social destinations and mail delivery remain pending rather than fabricated.
 
 The Firebase dependency uses a targeted patched gRPC override. Compatible security patches were applied to frontend and backend dependencies; rerun audits before deployment. A public launch additionally needs production origins/HTTPS, auth configuration, authorized API access where appropriate, rate limiting and operational monitoring.
