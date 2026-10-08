@@ -1,4 +1,21 @@
 {
   "schemaVersion": 1,
-  "products": {}
+  "products": [
+    { "productId": "HX-01A", "productCode": null, "name": "Hex Runner 02", "storeImage": null },
+    { "productId": "HX-02F", "productCode": null, "name": "Hex Trail", "storeImage": null },
+    { "productId": "HX-03C", "productCode": null, "name": "Hex Slide", "storeImage": null },
+    { "productId": "HX-04E", "productCode": null, "name": "Hex Mono", "storeImage": null }
+  ],
+  "catalogImages": [
+    { "aiImageFilename": "shoe1.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe2.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe3.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe4.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe5.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe6.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe7.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe8.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe9.jpg", "productId": null, "verified": false, "evidence": null },
+    { "aiImageFilename": "shoe10.jpg", "productId": null, "verified": false, "evidence": null }
+  ]
 }

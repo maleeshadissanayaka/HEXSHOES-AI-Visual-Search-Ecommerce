@@ -36,8 +36,8 @@ export default function ProductPage() {
         <span>{product.name ?? product.id}</span>
       </nav>
       <div className="product-detail-grid">
-        <ProductGallery product={product} />
-        <ProductInfo product={product} />
+        <ProductGallery key={`gallery-${product.id}`} product={product} />
+        <ProductInfo key={product.id} product={product} />
       </div>
       {related.length > 0 && (
         <section className="related-section">

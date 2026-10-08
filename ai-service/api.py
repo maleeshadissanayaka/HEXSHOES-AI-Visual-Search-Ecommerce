@@ -11,6 +11,7 @@ import io
 import os
 import warnings
 import asyncio
+from registry import load_registry
 
 BASE = Path(__file__).resolve().parent
 MAX_UPLOAD = 10 * 1024 * 1024
@@ -23,9 +24,7 @@ model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrai
 model.eval()
 with (BASE / "catalog_embeddings.json").open(encoding="utf-8") as handle:
     catalog = json.load(handle)
-with (BASE / "product_mapping.json").open(encoding="utf-8") as handle:
-    product_mapping = json.load(handle).get("products", {})
-# Empty until verified filename -> canonical Firestore document ID assignments exist.
+product_mapping = load_registry(BASE / "product_mapping.json", {item["filename"] for item in catalog})
 inference_lock = asyncio.Lock()
 
 
@@ -58,7 +57,7 @@ def rank(image_bytes):
 
 @app.get("/health")
 def health():
-    return {"status": "ready", "model": "ViT-B-32", "catalogSize": len(catalog), "mappedProducts": len(product_mapping)}
+    return {"status": "ready", "model": "ViT-B-32", "catalogSize": len(catalog), "mappedProducts": len(product_mapping), "unmappedCatalogImages": len(catalog) - len(product_mapping)}
 
 
 @app.post("/search")

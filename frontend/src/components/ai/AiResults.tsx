@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import type { VisualMatch } from "../../types/product";
 import { useProducts } from "../../hooks/useStore";
 import { catalogImage } from "../../services/aiSearch";
-import { productName } from "../../utils/product";
+import { productName, productImage, displayPrice } from "../../utils/product";
 export default function AiResults({ matches }: { matches: VisualMatch[] }) {
   const { products } = useProducts();
   return (
@@ -15,13 +15,17 @@ export default function AiResults({ matches }: { matches: VisualMatch[] }) {
         {matches.map((match) => {
           const product = products.find(
             (p) =>
-              (!!match.productId && p.id === match.productId) ||
+              !!match.productId &&
+              p.id === match.productId &&
               p.aiImageFilename === match.filename,
           );
           return (
             <article className="result-tile" key={match.filename}>
               <img
-                src={catalogImage(match.filename)}
+                src={
+                  (product && productImage(product)) ||
+                  catalogImage(match.filename)
+                }
                 alt={
                   product
                     ? productName(product)
@@ -33,15 +37,20 @@ export default function AiResults({ matches }: { matches: VisualMatch[] }) {
                 {match.score.toFixed(4)} similarity
               </span>
               {product ? (
-                <Link
-                  className="result-name"
-                  to={`/product/${encodeURIComponent(product.id)}`}
-                >
-                  {productName(product)} →
-                </Link>
+                <>
+                  <span className="result-name">{productName(product)}</span>
+                  <span>{displayPrice(product)}</span>
+                  <Link
+                    className="text-link"
+                    to={`/product/${encodeURIComponent(product.id)}`}
+                  >
+                    View Product
+                  </Link>
+                </>
               ) : (
                 <>
                   <span className="result-name">{match.filename}</span>
+                  <span>Catalog reference</span>
                   <span className="mapping-pending">
                     Product mapping pending
                   </span>

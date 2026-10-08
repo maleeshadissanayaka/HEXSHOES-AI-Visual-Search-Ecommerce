@@ -32,7 +32,10 @@ export async function searchImage(
     !Array.isArray(data.matches) ||
     !data.matches.every(
       (m: VisualMatch) =>
-        typeof m.filename === "string" && Number.isFinite(m.score),
+        typeof m.filename === "string" &&
+        Number.isFinite(m.score) &&
+        (m.productId === null ||
+          (typeof m.productId === "string" && m.productId.length > 0)),
     )
   )
     throw new Error("Invalid visual-search response.");

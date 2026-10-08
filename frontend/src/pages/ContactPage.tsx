@@ -3,7 +3,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   return (
     <div className="wrap page">
-      <span className="eyebrow">LET?S CONNECT</span>
+      <span className="eyebrow">LET'S CONNECT</span>
       <h1>Start a conversation.</h1>
       <p className="page-intro">
         General enquiries, product support, or a new partnership.

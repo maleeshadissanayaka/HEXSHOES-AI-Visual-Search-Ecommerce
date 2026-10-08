@@ -3,7 +3,9 @@ import express from 'express'
 import cors from 'cors'
 import { db } from './firebase.js'
 import { productFromDocument } from './productContract.js'
+import { loadProductImageRegistry, applyProductImageRegistry } from './productImageRegistry.js'
 const app = express()
+const productImageRegistry = loadProductImageRegistry()
 const port = Number(process.env.PORT || 4000)
 const origins = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map(value => value.trim()).filter(Boolean)
 app.disable('x-powered-by')
@@ -13,7 +15,7 @@ app.get('/', (_req, res) => res.json({ message: 'HEXSHOES backend is running' })
 app.get('/api/products', async (_req, res) => {
   try {
     const snapshot = await db.collection('products').get()
-    res.json(snapshot.docs.map(doc => productFromDocument(doc.id, doc.data())))
+    res.json(applyProductImageRegistry(snapshot.docs.map(doc => productFromDocument(doc.id, doc.data())), productImageRegistry))
   } catch {
     res.status(503).json({ error: { code: 'CATALOG_UNAVAILABLE', message: 'The product catalog is temporarily unavailable.' } })
   }
