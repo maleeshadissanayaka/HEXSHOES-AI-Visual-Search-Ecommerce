@@ -5,14 +5,7 @@ import Icon from "../shared/Icon";
 import SearchOverlay from "../shared/SearchOverlay";
 import MobileMenu from "./MobileMenu";
 import "./Navbar.css";
-const links = [
-  ["MEN", "/men"],
-  ["WOMEN", "/women"],
-  ["NEW DROPS", "/new-drops"],
-  ["FIND MY SHOE", "/visual-search"],
-  ["ABOUT", "/about"],
-  ["CONTACT", "/contact"],
-] as const;
+import { navigationLinks as links } from "../../data/navigation";
 export default function Navbar() {
   const [menu, setMenu] = useState(false),
     [search, setSearch] = useState(false),

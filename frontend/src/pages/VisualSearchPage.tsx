@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 export default function VisualSearchPage() {
   return (
     <div className="visual-search-page">
+      <h1 className="sr-only">AI Visual Search</h1>
       <AiSearch />
       <div className="wrap page">
         <span className="eyebrow">HOW IT WORKS</span>

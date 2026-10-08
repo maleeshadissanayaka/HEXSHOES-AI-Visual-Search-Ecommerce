@@ -65,6 +65,8 @@ async def search(file: UploadFile = File(...)):
     try:
         if file.content_type not in ("image/jpeg", "image/png"):
             raise HTTPException(status_code=415, detail="Only JPEG and PNG images are accepted.")
+        if Path(file.filename or "").suffix.lower() not in (".jpg", ".jpeg", ".png"):
+            raise HTTPException(status_code=415, detail="Choose a file with a JPG, JPEG or PNG extension.")
         image_bytes = await file.read(MAX_UPLOAD + 1)
         if len(image_bytes) > MAX_UPLOAD:
             raise HTTPException(status_code=413, detail="Choose an image smaller than 10 MB.")

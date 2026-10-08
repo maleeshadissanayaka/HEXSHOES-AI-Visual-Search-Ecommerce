@@ -6,7 +6,7 @@ interface Props {
   subtitle: string;
   status: string;
   copy: string;
-  icon: "search" | "chat" | "box" | "shield";
+  icon: "search" | "chat" | "box" | "shield" | "heart";
   stages: string[];
 }
 export default function IntelligenceCard({

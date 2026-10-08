@@ -25,6 +25,7 @@ export default function OrderSummary({
         <dd>{formatPrice(subtotal, currency)}</dd>
       </dl>
       <p>
+        Totals are a browser-local demo estimate, not a server-verified quote.
         Shipping, taxes and final stock confirmation are not connected. No
         payment will be taken.
       </p>

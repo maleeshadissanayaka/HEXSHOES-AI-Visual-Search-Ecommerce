@@ -1,10 +1,7 @@
-import { useRef } from "react";
-import useModal from "../../hooks/useModal";
+import Modal from "./Modal";
 import "./InfoModal.css";
 export type InfoTopic =
-  | "about"
   | "careers"
-  | "contact"
   | "sizing"
   | "returns"
   | "shipping"
@@ -20,14 +17,9 @@ const content: Record<
     body: string;
   }
 > = {
-  about: {
-    title: "About HEXSHOES",
-    body: "HEXSHOES is a modern footwear experience built around movement, design and intelligent technology.",
-  },
-  careers: { title: "Careers", body: "There are currently no open roles." },
-  contact: {
-    title: "Contact",
-    body: "Contact details will be published before the store launches.",
+  careers: {
+    title: "Careers",
+    body: "Verified career opportunities have not been published.",
   },
   sizing: {
     title: "Sizing Guide",
@@ -35,7 +27,7 @@ const content: Record<
   },
   returns: {
     title: "Returns",
-    body: "The 30-day returns policy will be finalized before the store launches.",
+    body: "Return eligibility and policy details will be confirmed before live purchasing.",
   },
   shipping: {
     title: "Shipping",
@@ -69,32 +61,12 @@ export default function InfoModal({
   topic: InfoTopic;
   onClose: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useModal(ref, onClose);
   return (
-    <div
-      className="modal-overlay open info-overlay"
-      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div
-        className="info-box"
-        ref={ref}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="info-title"
-      >
-        <button
-          className="modal-close"
-          aria-label="Close information"
-          onClick={onClose}
-        >
-          −
-        </button>
-        <h3 id="info-title">{content[topic].title}</h3>
-        <div className="info-body">
-          <p>{content[topic].body}</p>
-        </div>
+    <Modal title={content[topic].title} onClose={onClose} className="info-box">
+      <h2>{content[topic].title}</h2>
+      <div className="info-body">
+        <p>{content[topic].body}</p>
       </div>
-    </div>
+    </Modal>
   );
 }

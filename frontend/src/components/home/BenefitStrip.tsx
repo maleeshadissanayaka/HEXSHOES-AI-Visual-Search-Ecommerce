@@ -6,10 +6,10 @@ export default function BenefitStrip() {
       <div className="wrap benefits-grid">
         {(
           [
-            ["truck", "FREE SHIPPING", "Worldwide orders"],
-            ["search", "AI VISUAL SEARCH", "Find your style instantly"],
-            ["shield", "30-DAY RETURNS", "Hassle free"],
-            ["box", "SMALL BATCH PRODUCTION", "Premium quality"],
+            ["truck", "FIND YOUR FORM", "Explore the collection"],
+            ["search", "AI VISUAL SEARCH", "Ranked catalog references"],
+            ["shield", "EVERYDAY / BEYOND", "Built for your next move"],
+            ["box", "CONSIDERED DESIGN", "Movement meets technology"],
           ] as const
         ).map(([icon, title, copy]) => (
           <div className="benefit" key={title}>

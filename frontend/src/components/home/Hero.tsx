@@ -1,89 +1,138 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import useModal from "../../hooks/useModal";
-import Icon from "../shared/Icon";
-import "./Hero.css";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { Link } from "react-router-dom";
+import Modal from "../shared/Modal";
+import Icon from "../shared/Icon";
+import useMediaQuery from "../../hooks/useMediaQuery";
+import "./Hero.css";
+const videoSrc = "/media/hero/campaign-running.mp4";
+const poster = "/editorial/hero-grid.webp";
+const entrance = (delay: number) =>
+  ({ "--enter-delay": `${delay}ms` }) as CSSProperties;
 function Film({ onClose }: { onClose: () => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useModal(ref, onClose);
   return (
-    <div
-      className="modal-overlay open"
-      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div
-        className="film-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Campaign film"
-        ref={ref}
-      >
-        <button
-          className="modal-close"
-          onClick={onClose}
-          aria-label="Close film"
-        >
-          <Icon name="close" />
-        </button>
-        <h2>Movement, in focus.</h2>
-        <p>Campaign film coming soon.</p>
-        <img
-          src="/editorial/hero-grid.webp"
-          srcSet="/editorial/hero-grid-800.webp 800w, /editorial/hero-grid.webp 1600w"
-          sizes="(max-width: 640px) 1440px, 100vw"
-          alt="Footwear campaign on a city street"
-        />
-      </div>
-    </div>
+    <Modal title="Campaign preview" onClose={onClose} className="film-dialog">
+      <span className="eyebrow">HEX / CAMPAIGN STUDY</span>
+      <h2>Movement, in focus.</h2>
+      <video
+        controls
+        playsInline
+        preload="metadata"
+        poster={poster}
+        src={videoSrc}
+      />
+      <p>
+        Sample campaign footage. Presentation imagery, not official product
+        photography.
+      </p>
+    </Modal>
   );
 }
 export default function Hero() {
   const [film, setFilm] = useState(false);
-  const campaignImage = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let frame = 0;
-    const move = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        if (campaignImage.current)
-          campaignImage.current.style.transform = `translateY(${Math.min(window.scrollY * 0.025, 12)}px) scale(1.025)`;
-      });
-    };
-    window.addEventListener("scroll", move, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", move);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+  const [paused, setPaused] = useState(true);
+  const [failed, setFailed] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  const manuallyPaused = useRef(false);
+  const playDecorativeVideo = useMediaQuery(
+    "(min-width: 769px) and (prefers-reduced-motion: no-preference)",
+  );
   const close = useCallback(() => setFilm(false), []);
+  useEffect(() => {
+    const element = video.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) element.pause();
+        else if (!manuallyPaused.current) void element.play().catch(() => {});
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(element);
+    const visibility = () => {
+      if (document.hidden) element.pause();
+    };
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+      element.pause();
+    };
+  }, [playDecorativeVideo, failed]);
+  function toggleVideo() {
+    const element = video.current;
+    if (!element) return;
+    if (element.paused) {
+      manuallyPaused.current = false;
+      void element.play().catch(() => {});
+    } else {
+      manuallyPaused.current = true;
+      element.pause();
+    }
+  }
   return (
     <>
       <section className="hero" id="top">
         <img
-          ref={campaignImage}
           className="hero-image"
-          src="/editorial/hero-grid.webp"
-          alt="White performance footwear moving across wet city pavement in golden light"
+          src={poster}
+          alt="Performance footwear moving across wet city pavement in golden light"
+          srcSet="/editorial/hero-grid-800.webp 800w, /editorial/hero-grid.webp 1600w"
+          sizes="100vw"
           fetchPriority="high"
         />
+        {playDecorativeVideo && !failed && (
+          <video
+            ref={video}
+            className="hero-video"
+            src={videoSrc}
+            poster={poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            tabIndex={-1}
+            onPlay={() => setPaused(false)}
+            onPause={() => setPaused(true)}
+            onError={() => setFailed(true)}
+          />
+        )}
         <div className="hero-fade" />
         <div className="wrap hero-content">
-          <span className="eyebrow">FW26 COLLECTION</span>
+          <span className="eyebrow hero-enter" style={entrance(0)}>
+            FW26 COLLECTION
+          </span>
           <h1>
-            BUILT
-            <br />
-            FOR THE
-            <br />
-            <span className="outline">GRID</span>
-            <span className="hero-dot" aria-hidden="true" />
+            <span className="hero-line hero-enter" style={entrance(70)}>
+              BUILT
+            </span>
+            <span className="hero-line hero-enter" style={entrance(140)}>
+              FOR THE
+            </span>
+            <span className="hero-line">
+              <span className="outline hero-enter" style={entrance(210)}>
+                GRID
+              </span>
+              <span
+                className="hero-dot hero-enter"
+                aria-hidden="true"
+                style={entrance(270)}
+              />
+            </span>
           </h1>
-          <p>
-            PERFORMANCE FOOTWEAR FOR A MORE CONNECTED WORLD.
+          <p className="hero-enter" style={entrance(320)}>
+            Performance footwear for a more connected world.
             <br />
-            ENGINEERED FOR MOVEMENT. DESIGNED FOR WHAT’S NEXT.
+            Engineered for movement. Designed for what&apos;s next.
           </p>
-          <div className="hero-ctas">
+          <div className="hero-ctas hero-enter" style={entrance(380)}>
             <Link to="/new-drops" className="btn btn-solid">
               SHOP NEW DROPS <Icon name="arrow" />
             </Link>
@@ -95,21 +144,23 @@ export default function Hero() {
             </button>
           </div>
         </div>
-        <div className="campaign-detail" aria-hidden="true">
-          <p>
-            CITY
-            <br />
-            TRAIL
-            <br />
-            EVERYDAY
-            <br />
-            BEYOND
-          </p>
-          <span className="campaign-index">01</span>
-          <span>02</span>
-          <span>03</span>
-          <span>04</span>
+        <div className="hero-caption">
+          <span>01 / MOVEMENT STUDY</span>
+          <span>Footwear. Form. Forward.</span>
         </div>
+        {playDecorativeVideo && !failed && (
+          <button
+            className="hero-video-control"
+            onClick={toggleVideo}
+            aria-label={
+              paused ? "Play background video" : "Pause background video"
+            }
+            aria-pressed={!paused}
+          >
+            <span aria-hidden="true">{paused ? "▶" : "Ⅱ"}</span>
+            {paused ? "PLAY VIDEO" : "PAUSE VIDEO"}
+          </button>
+        )}
       </section>
       {film && <Film onClose={close} />}
     </>

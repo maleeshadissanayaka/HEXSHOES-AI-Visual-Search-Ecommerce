@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "../shared/Icon";
 import "./OurStory.css";
-export default function OurStory() {
+export default function OurStory({ showLink = true }: { showLink?: boolean }) {
   return (
     <section className="story" id="story" data-reveal>
       <img
@@ -25,9 +25,11 @@ export default function OurStory() {
             technology and data-driven discovery to create a smarter shopping
             experience.
           </p>
-          <Link className="btn btn-solid" to="/about">
-            OUR STORY <Icon name="arrow" />
-          </Link>
+          {showLink && (
+            <Link className="btn btn-solid" to="/about">
+              OUR STORY <Icon name="arrow" />
+            </Link>
+          )}
         </div>
         <div className="story-words">
           <span>MOVEMENT</span>

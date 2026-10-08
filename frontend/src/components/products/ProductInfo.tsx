@@ -19,10 +19,11 @@ export default function ProductInfo({
   const cart = useCart(),
     wishlist = useWishlist();
   const name = productName(product);
+  const Heading = compact ? "h2" : "h1";
   return (
     <div className="product-information">
       <span className="eyebrow">{product.code ?? product.id}</span>
-      <h1>{name}</h1>
+      <Heading>{name}</Heading>
       <p className="detail-price">{displayPrice(product)}</p>
       <p className="product-description">
         {product.description ?? "Product description pending."}
@@ -92,16 +93,18 @@ export default function ProductInfo({
           <details>
             <summary>Shipping & returns</summary>
             <p>
-              Worldwide shipping and a 30-day return window are planned.
-              Eligibility and delivery estimates will be confirmed before live
-              checkout launches.
+              Shipping coverage, costs, delivery estimates and return
+              eligibility will be confirmed before live purchasing. This demo
+              takes no payment.
             </p>
           </details>
           <details>
             <summary>Product details</summary>
             <dl>
               <dt>Code</dt>
-              <dd>{product.code ?? product.id}</dd>
+              <dd>{product.code ?? "Not supplied"}</dd>
+              <dt>Product ID</dt>
+              <dd>{product.id}</dd>
               <dt>Category</dt>
               <dd>{product.category ?? "Not supplied"}</dd>
               <dt>Gender</dt>

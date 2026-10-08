@@ -82,11 +82,9 @@ test("persistent wishlist/cart, quick view, product search and demo checkout", a
     ),
   ).toBe(true);
   await page.keyboard.press("Escape");
-  expect(
-    await page.evaluate(
-      () => document.activeElement?.textContent === "Quick View",
-    ),
-  ).toBe(true);
+  await expect(
+    page.getByRole("button", { name: "Quick View", exact: true }).first(),
+  ).toBeFocused();
   await page.goto("/cart");
   await expect(page.locator(".cart-line")).toHaveCount(1);
   await page
@@ -186,7 +184,7 @@ test("discovery, forms, scripted assistant, pending auth and 404", async ({
     .getByRole("button", { name: "HEX Assistant", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Best shoe under $150", exact: true })
+    .getByRole("button", { name: "Find a shoe under $150", exact: true })
     .click();
   await expect(page.locator(".assistant-message a")).toHaveCount(3);
   await expect(
@@ -263,7 +261,7 @@ test("real CLIP results and upload hardening", async ({ page, request }) => {
     .screenshot({ path: "verification/platform-ai-1440.png" });
 });
 
-for (const width of [1440, 1024, 768, 390])
+for (const width of [1440, 1366, 1024, 768, 390])
   test(`responsive ${width}: routes, menu, filters and genuine drag/drop`, async ({
     page,
   }) => {
@@ -301,19 +299,34 @@ for (const width of [1440, 1024, 768, 390])
         .click();
       await expect(page).toHaveURL("/men");
     }
+    await page.emulateMedia({ reducedMotion: "reduce" });
     for (const route of [
       "/shop",
+      "/men",
+      "/women",
+      "/new-drops",
+      "/wishlist",
       "/cart",
+      "/checkout",
       "/account",
       "/contact",
+      "/about",
       "/technology",
+      "/visual-search",
       "/product/HX-01A",
+      "/missing-page",
     ]) {
       await page.goto(route);
       await expect(page.locator(".loading-state")).toHaveCount(0);
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(200);
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth),
       ).toBe(width);
+      await page.screenshot({
+        path: `test-results/phase4/${width}/${route.replaceAll("/", "-")}.png`,
+        fullPage: true,
+      });
     }
     if (width <= 768) {
       await page.goto("/shop");

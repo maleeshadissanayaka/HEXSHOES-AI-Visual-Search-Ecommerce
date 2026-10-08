@@ -11,10 +11,14 @@ const valid = (value: unknown): value is CartItem[] =>
       item &&
       typeof item.key === "string" &&
       typeof item.productId === "string" &&
+      item.productId.length > 0 &&
       typeof item.name === "string" &&
+      item.name.length > 0 &&
       Number.isFinite(item.price) &&
       item.price >= 0 &&
       typeof item.currency === "string" &&
+      /^[A-Z]{3}$/.test(item.currency) &&
+      (item.image === null || typeof item.image === "string") &&
       Number.isInteger(item.quantity) &&
       item.quantity > 0 &&
       item.quantity <= 99 &&

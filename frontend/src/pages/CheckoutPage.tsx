@@ -2,15 +2,19 @@ import { useState } from "react";
 import { useCart } from "../hooks/useStore";
 import OrderSummary from "../components/products/OrderSummary";
 import EmptyState from "../components/shared/EmptyState";
+import { validateDemoForm, clearFormValidation } from "../utils/forms";
 export default function CheckoutPage() {
   const { items } = useCart(),
     [review, setReview] = useState(false);
   if (!items.length)
     return (
-      <EmptyState
-        title="Your cart is empty"
-        copy="Add a style before reviewing checkout."
-      />
+      <div className="wrap page">
+        <EmptyState
+          title="Your cart is empty"
+          headingLevel={1}
+          copy="Add a style before reviewing checkout."
+        />
+      </div>
     );
   return (
     <div className="wrap page">
@@ -23,8 +27,13 @@ export default function CheckoutPage() {
       <div className="cart-layout">
         <form
           className="checkout-form"
+          onChange={(e) => {
+            setReview(false);
+            clearFormValidation(e.currentTarget);
+          }}
           onSubmit={(e) => {
             e.preventDefault();
+            if (!validateDemoForm(e.currentTarget)) return;
             setReview(true);
           }}
         >
@@ -44,6 +53,8 @@ export default function CheckoutPage() {
                 type="tel"
                 name="phone"
                 autoComplete="tel"
+                pattern="[+0-9 ]{7,30}"
+                title="Use 7 to 30 characters: digits, spaces or a plus sign."
                 minLength={7}
                 maxLength={30}
                 required

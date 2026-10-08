@@ -31,7 +31,11 @@ export default function CartPage() {
               return (
                 <article className="cart-line" key={item.key}>
                   <Link to={`/product/${encodeURIComponent(item.productId)}`}>
-                    <ProductImage src={item.image} name={item.name} />
+                    <ProductImage
+                      src={item.image}
+                      name={item.name}
+                      productId={item.productId}
+                    />
                   </Link>
                   <div>
                     <Link to={`/product/${encodeURIComponent(item.productId)}`}>

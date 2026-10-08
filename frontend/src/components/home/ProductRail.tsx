@@ -26,6 +26,14 @@ export default function ProductRail() {
               <button
                 key={value}
                 aria-pressed={filter === value}
+                disabled={
+                  value !== "All" &&
+                  !products.some((p) =>
+                    ["Men", "Women"].includes(value)
+                      ? supportsGender(p, value)
+                      : matchesCategory(p, value),
+                  )
+                }
                 onClick={() => setFilter(value)}
               >
                 {value}
@@ -53,8 +61,7 @@ export default function ProductRail() {
           </p>
         )}
         <p className="catalog-note">
-          Latest available collection. Product photography and missing catalog
-          details are pending.
+          Explore the current collection. Temporary presentation imagery.
         </p>
       </div>
     </section>

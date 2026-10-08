@@ -27,12 +27,10 @@ export default function ProductFilters({
   ];
   const colors = [...new Set(products.flatMap((p) => p.colors))];
   const categories = [
-    ...new Set([
-      "Runners",
-      "Trail & Boot",
-      "Slides",
-      ...products.map((p) => p.category).filter((c): c is string => !!c),
-    ]),
+    ...new Set(products.map((p) => p.category).filter((c): c is string => !!c)),
+  ];
+  const genders = [
+    ...new Set(products.map((p) => p.gender).filter((g): g is string => !!g)),
   ];
   return (
     <div className="product-filters">
@@ -49,10 +47,13 @@ export default function ProductFilters({
         Category
         <select
           aria-label="Category"
+          disabled={!categories.length}
           value={filters.category}
           onChange={(e) => onChange("category", e.target.value)}
         >
-          <option value="">All categories</option>
+          <option value="">
+            {categories.length ? "All categories" : "Category data pending"}
+          </option>
           {categories.map((value) => (
             <option key={value}>{value}</option>
           ))}
@@ -63,13 +64,16 @@ export default function ProductFilters({
           Gender
           <select
             aria-label="Gender"
+            disabled={!genders.length}
             value={filters.gender}
             onChange={(e) => onChange("gender", e.target.value)}
           >
-            <option value="">All genders</option>
-            <option>Men</option>
-            <option>Women</option>
-            <option>Unisex</option>
+            <option value="">
+              {genders.length ? "All genders" : "Gender data pending"}
+            </option>
+            {genders.map((value) => (
+              <option key={value}>{value}</option>
+            ))}
           </select>
         </label>
       )}
@@ -104,10 +108,13 @@ export default function ProductFilters({
         Size
         <select
           aria-label="Size"
+          disabled={!sizes.length}
           value={filters.size}
           onChange={(e) => onChange("size", e.target.value)}
         >
-          <option value="">All supplied sizes</option>
+          <option value="">
+            {sizes.length ? "All supplied sizes" : "Size data pending"}
+          </option>
           {sizes.map((value) => (
             <option key={value}>{value}</option>
           ))}
@@ -117,10 +124,13 @@ export default function ProductFilters({
         Color
         <select
           aria-label="Color"
+          disabled={!colors.length}
           value={filters.color}
           onChange={(e) => onChange("color", e.target.value)}
         >
-          <option value="">All supplied colors</option>
+          <option value="">
+            {colors.length ? "All supplied colors" : "Color data pending"}
+          </option>
           {colors.map((value) => (
             <option key={value}>{value}</option>
           ))}
@@ -133,7 +143,9 @@ export default function ProductFilters({
           value={filters.sort}
           onChange={(e) => onChange("sort", e.target.value)}
         >
-          <option value="newest">Newest</option>
+          <option value="newest">
+            {products.some((p) => p.createdAt) ? "Newest" : "Catalog order"}
+          </option>
           <option value="price-asc">Price: low to high</option>
           <option value="price-desc">Price: high to low</option>
         </select>

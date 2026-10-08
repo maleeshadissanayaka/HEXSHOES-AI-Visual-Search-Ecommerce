@@ -20,6 +20,7 @@ export default function ProductPage() {
     return (
       <EmptyState
         title="Product not found"
+        headingLevel={1}
         copy="This style may no longer be available."
       />
     );

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "../shared/Icon";
+import { useProducts } from "../../hooks/useStore";
+import { matchesCategory } from "../../utils/product";
 const categories = [
   {
     name: "RUNNERS",
@@ -19,6 +21,7 @@ const categories = [
 ];
 import "./BrandSections.css";
 export default function CategorySection() {
+  const { products } = useProducts();
   return (
     <section className="cats section-space" id="cats" data-reveal>
       <div className="wrap">
@@ -28,11 +31,27 @@ export default function CategorySection() {
             VIEW ALL <Icon name="arrow" />
           </Link>
         </div>
+        <p className="catalog-note">
+          Campaign concepts. Category assignments await verified product data.
+        </p>
         <div className="cat-grid">
           {categories.map((category) => (
             <Link
               className="cat-tile"
-              to={`/shop?category=${encodeURIComponent(category.name === "TRAIL & BOOT" ? "Trail & Boot" : category.name === "RUNNERS" ? "Runners" : "Slides")}`}
+              to={
+                products.some((p) =>
+                  matchesCategory(
+                    p,
+                    category.name === "TRAIL & BOOT"
+                      ? "Trail & Boot"
+                      : category.name === "RUNNERS"
+                        ? "Runners"
+                        : "Slides",
+                  ),
+                )
+                  ? `/shop?category=${encodeURIComponent(category.name === "TRAIL & BOOT" ? "Trail & Boot" : category.name === "RUNNERS" ? "Runners" : "Slides")}`
+                  : "/shop"
+              }
               key={category.name}
             >
               <img src={category.image} alt="" loading="lazy" />

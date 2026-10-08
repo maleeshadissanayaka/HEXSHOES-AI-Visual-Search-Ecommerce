@@ -23,6 +23,7 @@ export default function ShopPage({
     [params, setParams] = useSearchParams();
   const [drawer, setDrawer] = useState(false),
     close = useCallback(() => setDrawer(false), [setDrawer]);
+  const [referenceTime] = useState(() => Date.now());
   const filters: Filters = {
     query: params.get("q") ?? "",
     category: params.get("category") ?? "",
@@ -43,10 +44,18 @@ export default function ShopPage({
   const hasNewMetadata = products.some(
     (p) => p.isNew !== null || p.createdAt !== null,
   );
+  const recentRelease = (date: string | null) => {
+    if (!date) return false;
+    const age = referenceTime - Date.parse(date);
+    return age >= 0 && age <= 30 * 24 * 60 * 60 * 1000;
+  };
   const filtered = products
     .filter(
       (p) =>
-        (!newDrops || !hasNewMetadata || p.isNew === true || !!p.createdAt) &&
+        (!newDrops ||
+          !hasNewMetadata ||
+          p.isNew === true ||
+          (p.isNew === null && recentRelease(p.createdAt))) &&
         matchesSearch(p, filters.query) &&
         matchesCategory(p, filters.category) &&
         (!filters.gender || supportsGender(p, filters.gender)) &&

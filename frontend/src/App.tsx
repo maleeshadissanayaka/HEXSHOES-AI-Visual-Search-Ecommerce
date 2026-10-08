@@ -13,6 +13,7 @@ import Loader from "./components/shared/Loader";
 import HomePage from "./pages/HomePage";
 import "./App.css";
 import "./styles/store.css";
+import "./styles/premium.css";
 const ShopPage = lazy(() => import("./pages/ShopPage")),
   MenPage = lazy(() => import("./pages/MenPage")),
   WomenPage = lazy(() => import("./pages/WomenPage")),
@@ -78,7 +79,12 @@ function Shell() {
   }, [location.pathname]);
   useEffect(() => {
     if (!location.hash) return;
-    const anchor = decodeURIComponent(location.hash.slice(1));
+    let anchor: string;
+    try {
+      anchor = decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return;
+    }
     const scroll = () => {
       const element = document.getElementById(anchor);
       if (!element) return false;
@@ -107,25 +113,27 @@ function Shell() {
       <Ticker />
       <Navbar />
       <main id="main" tabIndex={-1}>
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/men" element={<MenPage />} />
-            <Route path="/women" element={<WomenPage />} />
-            <Route path="/new-drops" element={<NewDropsPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/visual-search" element={<VisualSearchPage />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/technology" element={<TechnologyPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
+        <div className="route-surface" key={location.pathname}>
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/men" element={<MenPage />} />
+              <Route path="/women" element={<WomenPage />} />
+              <Route path="/new-drops" element={<NewDropsPage />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/visual-search" element={<VisualSearchPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/technology" element={<TechnologyPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
+        </div>
       </main>
       <Footer onOpenInfo={setTopic} />
       {topic && <InfoModal topic={topic} onClose={close} />}

@@ -16,8 +16,8 @@ export default function QuickViewModal({
       onClose={onClose}
       className="quick-view"
     >
-      <ProductGallery product={product} />
-      <ProductInfo product={product} compact />
+      <ProductGallery key={`gallery-${product.id}`} product={product} />
+      <ProductInfo key={product.id} product={product} compact />
     </Modal>
   );
 }

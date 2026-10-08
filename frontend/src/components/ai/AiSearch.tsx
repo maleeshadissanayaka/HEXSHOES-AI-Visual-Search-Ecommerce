@@ -82,6 +82,19 @@ export default function AiSearch() {
         <div className="ai-upload">
           <AiUpload loading={loading} onFile={(file) => void upload(file)} />
           <div aria-live="polite" aria-busy={loading}>
+            {loading && (
+              <div className="analysis-state" role="status">
+                <span className="analysis-orbit" aria-hidden="true" />
+                <div>
+                  <h3>Analyzing your image</h3>
+                  <p>
+                    Generating visual embedding · Comparing catalog vectors ·
+                    Ranking similar styles
+                  </p>
+                  <small>CLIP / ViT-B-32 · Request in progress</small>
+                </div>
+              </div>
+            )}
             {error && (
               <p role="alert" className="error-msg">
                 {error}

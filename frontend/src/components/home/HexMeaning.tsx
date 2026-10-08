@@ -3,14 +3,11 @@ export default function HexMeaning() {
   return (
     <section className="meaning" aria-label="The HEX philosophy" data-reveal>
       <div className="wrap meaning-grid">
-        <h2>
-          THE
-          <br />
+        <h2 aria-label="The HEX means more.">
+          <span>THE</span>
           <strong>HEX</strong>
-          <br />
-          MEANS
-          <br />
-          MORE.
+          <span>MEANS</span>
+          <span>MORE.</span>
         </h2>
         {(
           [

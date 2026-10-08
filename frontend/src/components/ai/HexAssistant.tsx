@@ -5,17 +5,20 @@ import { assistantReply } from "../../services/assistant";
 import { productName, displayPrice } from "../../utils/product";
 import Modal from "../shared/Modal";
 import Icon from "../shared/Icon";
+import ProductImage from "../shared/ProductImage";
+import { productImage } from "../../utils/product";
 import "./HexAssistant.css";
 interface Message {
   role: "user" | "assistant";
   text: string;
   ids?: string[];
+  action?: { to: string; label: string };
 }
 const chips = [
-  "Find black runners",
-  "Best shoe under $150",
-  "Help me choose a trail shoe",
+  "Find a shoe under $150",
   "Show New Drops",
+  "What is visual search?",
+  "Compare Hex Runner and Hex Mono",
 ];
 export default function HexAssistant() {
   const [open, setOpen] = useState(false),
@@ -23,7 +26,7 @@ export default function HexAssistant() {
     [messages, setMessages] = useState<Message[]>([
       {
         role: "assistant",
-        text: "I can help explore the real catalog using basic scripted matching. I am not LLM-powered. Ask about a style or budget.",
+        text: "Welcome to HEX. Tell me a style or a budget, and I'll help you explore the collection.",
       },
     ]);
   const { products, loading, error } = useProducts();
@@ -64,15 +67,17 @@ export default function HexAssistant() {
           onClose={close}
           className="assistant-modal"
         >
-          <span className="eyebrow">PRODUCT-AWARE / SCRIPTED ASSISTANT</span>
+          <span className="eyebrow">PRODUCT ASSISTANT</span>
           <h2>Find your next move.</h2>
-          <p className="assistant-disclosure">
-            Basic catalog matching. LLM integration is planned.
-          </p>
           <div className="assistant-history" ref={history} aria-live="polite">
             {messages.map((message, i) => (
               <div className={`assistant-message ${message.role}`} key={i}>
                 <p>{message.text}</p>
+                {message.action && (
+                  <Link to={message.action.to} onClick={close}>
+                    {message.action.label}
+                  </Link>
+                )}
                 {message.ids?.map((id) => {
                   const product = products.find((p) => p.id === id);
                   return product ? (
@@ -80,9 +85,18 @@ export default function HexAssistant() {
                       key={id}
                       to={`/product/${encodeURIComponent(id)}`}
                       onClick={close}
+                      className="assistant-product"
                     >
-                      {productName(product)}{" "}
-                      <span>{displayPrice(product)}</span>
+                      <ProductImage
+                        src={productImage(product)}
+                        productId={id}
+                        sizes="62px"
+                        name={productName(product)}
+                      />
+                      <span>
+                        {productName(product)}
+                        <small>{displayPrice(product)}</small>
+                      </span>
                     </Link>
                   ) : null;
                 })}
@@ -127,6 +141,9 @@ export default function HexAssistant() {
               <Icon name="arrow" />
             </button>
           </form>
+          <p className="assistant-disclosure">
+            Catalog-based assistant · Advanced AI agent planned
+          </p>
         </Modal>
       )}
     </>

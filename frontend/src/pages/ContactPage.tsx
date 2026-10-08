@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { validateDemoForm, clearFormValidation } from "../utils/forms";
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   return (
-    <div className="wrap page">
+    <div className="wrap page contact-page">
       <span className="eyebrow">LET'S CONNECT</span>
       <h1>Start a conversation.</h1>
       <p className="page-intro">
@@ -11,8 +12,13 @@ export default function ContactPage() {
       <div className="contact-layout">
         <form
           className="contact-form"
+          onChange={(e) => {
+            setSubmitted(false);
+            clearFormValidation(e.currentTarget);
+          }}
           onSubmit={(e) => {
             e.preventDefault();
+            if (!validateDemoForm(e.currentTarget)) return;
             setSubmitted(true);
           }}
         >
@@ -56,8 +62,8 @@ export default function ContactPage() {
           </p>
           {submitted && (
             <p className="form-notice" role="status">
-              Your message passed validation. It has not been sent; contact
-              delivery integration is pending.
+              Message form demo — delivery integration pending. Your message
+              passed validation. It has not been sent.
             </p>
           )}
         </form>
@@ -75,7 +81,9 @@ export default function ContactPage() {
               <p>{copy}</p>
             </div>
           ))}
-          <span className="eyebrow">VERIFIED CONTACT CHANNELS PENDING</span>
+          <p className="form-help">
+            Contact channels and delivery integration are being prepared.
+          </p>
         </aside>
       </div>
     </div>

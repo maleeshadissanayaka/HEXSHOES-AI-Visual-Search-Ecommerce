@@ -8,27 +8,28 @@ export default function Ticker() {
         <span>
           <Icon name="truck" />
           <span>
-            FREE SHIPPING WORLDWIDE<small>Orders over $150</small>
+            BUILT FOR MOVEMENT
+            <small>Considered footwear. New perspectives.</small>
           </span>
         </span>
         <span>
           <span>
-            FW26 DROP LIVE NOW<small>Limited quantities</small>
+            FW26 / COLLECTION<small>Explore the HEX design direction</small>
           </span>
         </span>
         <span>
           <Icon name="box" />
           <span>
-            30-DAY RETURNS<small>Hassle free</small>
+            EVERYDAY / BEYOND<small>Find your next move</small>
           </span>
         </span>
         <Link to="/visual-search">
           <Icon name="search" />
           <span>
-            AI VISUAL SEARCH<small>Find your style instantly</small>
+            AI VISUAL SEARCH<small>Explore similar styles</small>
           </span>
         </Link>
-        <span className="ticker-location">Sri Lanka (LKR)</span>
+        <span className="ticker-location">CATALOG / USD</span>
       </div>
     </div>
   );

@@ -1,12 +1,9 @@
 import { NavLink } from "react-router-dom";
 import Modal from "../shared/Modal";
+import { navigationLinks } from "../../data/navigation";
 const links = [
-  ["MEN", "/men"],
-  ["WOMEN", "/women"],
-  ["NEW DROPS", "/new-drops"],
-  ["FIND MY SHOE", "/visual-search"],
-  ["ABOUT", "/about"],
-  ["CONTACT", "/contact"],
+  ...navigationLinks,
+  ["TECHNOLOGY", "/technology"],
   ["ACCOUNT", "/account"],
 ] as const;
 export default function MobileMenu({ onClose }: { onClose: () => void }) {

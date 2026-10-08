@@ -5,7 +5,8 @@ export default function NotFoundPage() {
       <span className="eyebrow">404</span>
       <EmptyState
         title="Off the grid."
-        copy="This page could not be found. Let?s get you moving again."
+        headingLevel={1}
+        copy="This page could not be found. Let's get you moving again."
         action="BACK TO HOME"
         to="/"
       />

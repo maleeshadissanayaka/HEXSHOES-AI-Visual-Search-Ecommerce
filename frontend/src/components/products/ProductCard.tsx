@@ -41,7 +41,11 @@ export default function ProductCard({ product }: { product: Product }) {
             to={`/product/${encodeURIComponent(product.id)}`}
             aria-label={`View ${name}`}
           >
-            <ProductImage src={productImage(product)} name={name} />
+            <ProductImage
+              src={productImage(product)}
+              name={name}
+              productId={product.id}
+            />
           </Link>
           <button
             className="qv-btn"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
 import ProductImage from "./ProductImage";
@@ -13,6 +13,7 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const { products, loading, error } = useProducts();
   const results = products.filter((p) => matchesSearch(p, query));
+  const resultsRef = useRef<HTMLDivElement>(null);
   return (
     <Modal title="Search products" onClose={onClose} className="search-modal">
       <span className="eyebrow">FIND YOUR NEXT PAIR</span>
@@ -22,11 +23,18 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
       </label>
       <input
         id="global-search"
+        data-autofocus
         className="search-input"
         type="search"
         placeholder="Search name, code, category..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            resultsRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+          }
+        }}
       />
       {loading ? (
         <p role="status">Loading products...</p>
@@ -34,8 +42,33 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
         <p role="alert">{error}</p>
       ) : (
         <>
-          <p className="search-count">{results.length} styles</p>
-          <div className="search-results">
+          <p className="search-count" role="status">
+            {results.length} styles · Use arrow keys to browse results
+          </p>
+          <div
+            className="search-results"
+            ref={resultsRef}
+            onKeyDown={(e) => {
+              if (!["ArrowDown", "ArrowUp"].includes(e.key)) return;
+              e.preventDefault();
+              const links = Array.from(
+                resultsRef.current?.querySelectorAll<HTMLAnchorElement>("a") ??
+                  [],
+              );
+              const index = links.indexOf(
+                document.activeElement as HTMLAnchorElement,
+              );
+              if (e.key === "ArrowUp" && index <= 0)
+                document.getElementById("global-search")?.focus();
+              else
+                links[
+                  Math.min(
+                    links.length - 1,
+                    index + (e.key === "ArrowDown" ? 1 : -1),
+                  )
+                ]?.focus();
+            }}
+          >
             {results.map((product) => (
               <Link
                 to={`/product/${encodeURIComponent(product.id)}`}
@@ -45,6 +78,8 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
                 <ProductImage
                   src={productImage(product)}
                   name={productName(product)}
+                  productId={product.id}
+                  sizes="64px"
                 />
                 <div>
                   <span className="eyebrow">{product.code ?? product.id}</span>

@@ -12,7 +12,7 @@ export default function AiResults({ matches }: { matches: VisualMatch[] }) {
       </h3>
       {matches.length === 0 && <p>No catalog matches were returned.</p>}
       <div className="results">
-        {matches.map((match) => {
+        {matches.map((match, rank) => {
           const product = products.find(
             (p) =>
               !!match.productId &&
@@ -21,6 +21,7 @@ export default function AiResults({ matches }: { matches: VisualMatch[] }) {
           );
           return (
             <article className="result-tile" key={match.filename}>
+              <span className="rank-badge">0{rank + 1}</span>
               <img
                 src={
                   (product && productImage(product)) ||

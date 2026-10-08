@@ -362,15 +362,6 @@ legend {
   border-color: #6c7792;
   transform: translateY(-3px);
 }
-.intelligence-card .future-label {
-  border: 0;
-  width: auto;
-  height: auto;
-  display: flex;
-  gap: 9px;
-  align-self: flex-start;
-  font-size: 10px;
-}
 .feature-status {
   border: 1px solid #424955;
   padding: 5px 7px;
@@ -1472,4 +1463,143 @@ legend {
 /* Keep the cart checkout action clear of the floating assistant. */
 .order-summary {
   margin-bottom: 40px;
+}
+
+/* Final portfolio polish, retaining the established campaign palette. */
+.nav-links {
+  gap: clamp(10px, 1.3vw, 20px);
+}
+.nav-right > :is(a, button) {
+  min-height: 40px;
+}
+.nav-links a.active {
+  color: #a8b8ff;
+}
+.nav-links a:hover,
+.text-link:hover {
+  color: #c5d0ff;
+}
+.home-filters button:disabled {
+  opacity: 0.55;
+}
+.product-filters select:disabled {
+  opacity: 0.65;
+}
+.cat-grid {
+  margin-top: 18px;
+}
+.product-information h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  margin: 14px 0;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.empty-state h1 {
+  font-size: 32px;
+  margin: 18px 0 12px;
+}
+.info-box h2 {
+  font-size: 24px;
+  margin: 0 0 20px;
+}
+.film-dialog h2 {
+  margin-bottom: 12px;
+}
+.film-dialog p {
+  color: #bbc0ca;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.film-dialog img {
+  border-radius: 4px;
+  width: 100%;
+}
+.assistant-message p {
+  white-space: pre-line;
+}
+.architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.architecture-grid article {
+  padding: 26px;
+  border: 1px solid #343d49;
+  background: #0b0e12;
+  border-radius: 6px;
+}
+.architecture-grid h3 {
+  font-size: 22px;
+  margin: 16px 0;
+}
+.architecture-grid p {
+  color: #b5bac3;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.architecture-flow {
+  padding: 22px;
+  border-left: 2px solid #8197ff;
+  background: #0d1118;
+}
+.architecture-flow p {
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.technology-limits {
+  padding-left: 22px;
+  color: #b5bac3;
+  font-size: 14px;
+  line-height: 1.9;
+}
+.technology-limits li {
+  margin-bottom: 12px;
+}
+.technology-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.technology-sources a {
+  color: #a8b8ff;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.mapping-pending {
+  font-size: 10px;
+  color: #bbc0ca;
+}
+.result-tile > span:not(.match-score):not(.result-name):not(.mapping-pending) {
+  font-size: 11px;
+  color: #b8bec9;
+}
+.intelligence-card h4 {
+  margin-top: 12px;
+}
+@media (max-width: 1200px) {
+  .nav-links {
+    display: none;
+  }
+}
+@media (min-width: 1201px) {
+  .menu-button {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .architecture-grid {
+    grid-template-columns: 1fr;
+  }
+  .architecture-grid article {
+    padding: 20px;
+  }
+  .architecture-grid h3 {
+    font-size: 20px;
+  }
+  .technology-sources {
+    flex-direction: column;
+    gap: 14px;
+  }
 }

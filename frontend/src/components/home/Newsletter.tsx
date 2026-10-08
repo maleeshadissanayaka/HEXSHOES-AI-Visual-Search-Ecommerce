@@ -13,6 +13,7 @@ export default function Newsletter() {
         </div>
         <form
           className="news-form"
+          onChange={() => setNotice(false)}
           onSubmit={(e) => {
             e.preventDefault();
             setNotice(true);
@@ -32,7 +33,7 @@ export default function Newsletter() {
           </button>
           {notice && (
             <p role="status">
-              Newsletter subscriptions are coming soon. Your email has not been
+              Subscription integration coming soon. Your email has not been
               stored.
             </p>
           )}
