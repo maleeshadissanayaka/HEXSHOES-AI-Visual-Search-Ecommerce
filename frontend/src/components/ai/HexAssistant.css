@@ -1,0 +1,27 @@
+.chat-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 17px;
+  border: 1px solid #5364a0;
+  border-radius: 30px;
+  background: #172042;
+  color: white;
+  font-size: 11px;
+  box-shadow: 0 4px 18px #0005;
+}
+.chat-fab .icon {
+  color: #8fa4ff;
+}
+@media (max-width: 500px) {
+  .chat-fab {
+    right: 12px;
+    bottom: 12px;
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}

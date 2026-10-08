@@ -27,3 +27,7 @@ Final prompt:
 Final prompt:
 
 > Use case: photorealistic-natural. Wide landscape 2.4:1 background for premium footwear brand Our Story section. A lone person in black jacket and trousers with black backpack standing on rugged rocky ridge overlooking a city in a mountain valley at golden sunset. Human standing around 70 percent across frame, entire silhouette and hiking shoes visible, cinematic warm horizon, detailed dark rocks in foreground, left 45 percent shadowed and uncluttered for HTML copy. Photoreal editorial lifestyle campaign. No text, logos, UI, typography or watermarks.
+
+## Optimized delivery variants
+
+The `.webp` and `-800.webp` derivatives were encoded locally from the existing PNG campaign artwork at 1600/800 px with WebP quality 86. They preserve the approved composition; no artwork was regenerated. PNG originals remain as provenance/reference material.

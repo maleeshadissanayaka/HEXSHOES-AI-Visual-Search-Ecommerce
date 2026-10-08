@@ -1,4 +1,0 @@
-import { useState } from 'react';
-import Icon from './Icon';
-import './Newsletter.css';
-export default function Newsletter() { const [notice, setNotice] = useState(false); return <section className="news" id="newsletter" data-reveal><div className="wrap news-inner"><div><span className="eyebrow">STAY IN THE LOOP</span><h2>Join the movement.</h2><p>Get new drops, product stories and early access.</p></div><form className="news-form" onSubmit={e => { e.preventDefault(); setNotice(true); }}><label className="sr-only" htmlFor="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="Your email address" required/><button className="btn btn-solid" type="submit">SUBSCRIBE <Icon name="arrow"/></button>{notice && <p role="status">Newsletter subscriptions are coming soon. Your email has not been stored.</p>}</form></div></section>; }

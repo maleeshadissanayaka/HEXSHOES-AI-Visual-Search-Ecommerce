@@ -1,0 +1,233 @@
+.benefits {
+  border-bottom: 1px solid var(--line);
+  background: #0a0c0e;
+}
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding-top: 24px;
+  padding-bottom: 24px;
+  gap: 25px;
+}
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.benefit > .icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.benefit h3 {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.benefit p {
+  font-size: 12px;
+  color: var(--grey-1);
+  margin-top: 5px;
+}
+.meaning {
+  background: #f3f2ee;
+  color: #11131b;
+}
+.meaning-grid {
+  display: grid;
+  grid-template-columns: 0.65fr repeat(3, 1fr);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  gap: 28px;
+}
+.meaning h2 {
+  font-size: 24px;
+  line-height: 1.08;
+  letter-spacing: 0.07em;
+  font-weight: 400;
+}
+.meaning-column {
+  position: relative;
+  border-left: 1px solid #888;
+  min-height: 130px;
+  padding: 0 30px;
+  overflow: hidden;
+}
+.meaning-letter {
+  position: relative;
+  z-index: 1;
+  font:
+    900 64px/0.95 "Archivo",
+    sans-serif;
+  color: var(--signal);
+}
+.meaning-column h3 {
+  position: relative;
+  z-index: 1;
+  font-size: 21px;
+  font-weight: 900;
+  margin: 6px 0;
+}
+.meaning-column p {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.material {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  width: 42%;
+  height: 150px;
+  background: url("/editorial/hero-grid.webp") 0 20%/600% auto;
+  filter: grayscale(1);
+  opacity: 0.12;
+  mask-image: linear-gradient(90deg, transparent, #000);
+}
+.material-E {
+  background-position: 18% 10%;
+}
+.material-X {
+  background-position: 96% 0;
+}
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.cat-tile {
+  position: relative;
+  aspect-ratio: 2.05;
+  overflow: hidden;
+  border: 1px solid #42464a;
+  border-radius: 4px;
+}
+.cat-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+.cat-tile:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #050506e8, transparent 75%);
+}
+.cat-tile:hover img {
+  transform: scale(1.045);
+}
+.category-copy {
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+  z-index: 1;
+}
+.category-copy h3 {
+  font-size: 19px;
+}
+.category-copy p {
+  font-size: 12px;
+  color: #ddd;
+  margin-top: 3px;
+}
+.round-arrow {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+@media (max-width: 850px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .meaning-grid {
+    gap: 15px;
+  }
+  .meaning-column {
+    padding-left: 16px;
+    padding-right: 0;
+  }
+  .meaning-column h3 {
+    font-size: 16px;
+  }
+  .meaning-column p {
+    font-size: 9px;
+  }
+  .category-copy h3 {
+    font-size: 15px;
+  }
+  .round-arrow {
+    width: 28px;
+    height: 28px;
+    right: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .benefits-grid {
+    gap: 20px 12px;
+  }
+  .benefit {
+    gap: 10px;
+  }
+  .benefit h3 {
+    font-size: 9px;
+  }
+  .benefit p {
+    font-size: 10px;
+  }
+  .benefit > .icon {
+    width: 25px;
+  }
+  .meaning-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+  .meaning h2 {
+    grid-column: 1/-1;
+    font-size: 23px;
+    line-height: 1.25;
+  }
+  .meaning h2 br {
+    display: inline;
+  }
+  .meaning h2 br:after {
+    content: " ";
+  }
+  .meaning h2 strong {
+    margin: 0 7px;
+  }
+  .meaning-column {
+    min-height: 115px;
+    padding-left: 10px;
+  }
+  .meaning-letter {
+    font-size: 46px;
+  }
+  .meaning-column h3 {
+    font-size: 13px;
+  }
+  .meaning-column p {
+    line-height: 1.6;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+  .cat-grid {
+    grid-template-columns: 1fr;
+  }
+  .cat-tile {
+    aspect-ratio: 2.1;
+  }
+  .category-copy h3 {
+    font-size: 20px;
+  }
+}

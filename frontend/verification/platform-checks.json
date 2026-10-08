@@ -1,0 +1,24 @@
+{
+  "tests": {
+    "startTime": "2026-10-07T23:00:29.269Z",
+    "duration": 64932.986000000004,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "widths": [
+    1440,
+    1024,
+    768,
+    390
+  ],
+  "services": {
+    "frontend": "http://localhost:5173",
+    "backend": "http://localhost:4000",
+    "ai": "http://127.0.0.1:8000"
+  },
+  "auth": "UI implemented / Firebase Auth configuration pending",
+  "productLinking": "mapping pending",
+  "mockedAPIs": false
+}

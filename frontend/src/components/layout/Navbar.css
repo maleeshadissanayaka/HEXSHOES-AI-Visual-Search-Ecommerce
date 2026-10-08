@@ -1,0 +1,95 @@
+.navbar {
+  height: 68px;
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: rgba(5, 5, 6, 0.18);
+  border-bottom: 1px solid #ffffff30;
+  transition:
+    background 0.3s,
+    backdrop-filter 0.3s;
+}
+.navbar.scrolled {
+  background: rgba(5, 5, 6, 0.9);
+  backdrop-filter: blur(16px);
+}
+.nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.nav-mark {
+  font-size: 27px;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+.nav-mark strong {
+  letter-spacing: -0.035em;
+}
+.nav-mark sup {
+  font-size: 8px;
+  vertical-align: top;
+}
+.nav-links {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 11px;
+  font-weight: 600;
+}
+.nav-right {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.nav-right a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+}
+.wish-count {
+  background: var(--signal);
+  border-radius: 50%;
+  padding: 2px 5px;
+}
+.menu-button {
+  background: none;
+  border: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 36px;
+}
+.nav-links a:hover {
+  color: #9aaaff;
+}
+@media (max-width: 1050px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-links a {
+    padding: 10px;
+  }
+  .nav-right {
+    gap: 12px;
+  }
+}
+@media (max-width: 500px) {
+  .nav-mark {
+    font-size: 21px;
+  }
+  .nav-inner {
+    gap: 12px;
+  }
+  .nav-right {
+    gap: 8px;
+  }
+  .nav-right .icon {
+    width: 18px;
+  }
+}

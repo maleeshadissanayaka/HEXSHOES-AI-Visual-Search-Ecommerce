@@ -1,0 +1,158 @@
+.rail-section {
+  padding: 0 0 38px;
+}
+.rail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.rail:has(> .prod-card:nth-child(4):last-child) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.prod-card {
+  position: relative;
+  border: 1px solid #36393e;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #090b0d;
+  min-width: 0;
+  transition: border-color 0.3s;
+}
+.prod-card:hover {
+  border-color: #737982;
+}
+.prod-img {
+  position: relative;
+  aspect-ratio: 1.65;
+  overflow: hidden;
+  background: #101114;
+  display: grid;
+  place-items: center;
+}
+.prod-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s;
+}
+.prod-card:hover .prod-img img {
+  transform: scale(1.045);
+}
+.image-unavailable {
+  font-size: 11px;
+  color: #8d9199;
+  text-align: center;
+  padding: 20px;
+}
+.wish-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  border: 0;
+  background: #05050660;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.wish-btn.active {
+  color: #91a4ff;
+  animation: wish-in 0.25s ease;
+}
+.wish-btn.active svg {
+  fill: var(--signal);
+}
+@keyframes wish-in {
+  50% {
+    transform: scale(1.15);
+  }
+}
+.qv-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #aaa;
+  padding: 8px 14px;
+  background: #050506d9;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.prod-card:hover .qv-btn,
+.prod-card:focus-within .qv-btn {
+  opacity: 1;
+}
+.prod-info {
+  padding: 14px;
+}
+.prod-info .tag {
+  color: #9a9ca3;
+  font:
+    10px "JetBrains Mono",
+    monospace;
+}
+.prod-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+.prod-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.price {
+  font:
+    14px "JetBrains Mono",
+    monospace;
+}
+.add-circle {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #8b8d92;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 23px;
+}
+.add-circle.added {
+  background: var(--signal);
+  font-size: 15px;
+}
+.rail-status {
+  padding: 25px 0;
+  color: #bbb;
+  font-size: 13px;
+}
+.rail-status.error {
+  color: #f1a4a4;
+}
+@media (max-width: 1000px) {
+  .rail,
+  .rail:has(> .prod-card:nth-child(4):last-child) {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 12px;
+  }
+  .prod-card {
+    flex: 0 0 230px;
+    scroll-snap-align: start;
+  }
+}
+@media (hover: none) {
+  .qv-btn {
+    opacity: 1;
+  }
+}
+@media (max-width: 500px) {
+  .prod-card {
+    flex-basis: 220px;
+  }
+}

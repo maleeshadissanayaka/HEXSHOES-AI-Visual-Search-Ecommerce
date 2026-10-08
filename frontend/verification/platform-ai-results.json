@@ -1,0 +1,30 @@
+{
+  "matches": [
+    {
+      "productId": null,
+      "filename": "shoe5.jpg",
+      "score": 0.7847
+    },
+    {
+      "productId": null,
+      "filename": "shoe9.jpg",
+      "score": 0.7777
+    },
+    {
+      "productId": null,
+      "filename": "shoe2.jpg",
+      "score": 0.7694
+    },
+    {
+      "productId": null,
+      "filename": "shoe7.jpg",
+      "score": 0.7666
+    },
+    {
+      "productId": null,
+      "filename": "shoe10.jpg",
+      "score": 0.7642
+    }
+  ],
+  "metric": "cosine_similarity"
+}
